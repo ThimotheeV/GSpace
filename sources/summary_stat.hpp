@@ -104,7 +104,7 @@ struct info_collector_c
     bool Coa_times{false};
 
     bool Effective_disp{false};
-    bool Check_disp_distrib{false};
+    //bool Check_disp_distrib{false}; // not used anymore, may be reused if we don't want to store and output dispersal distributions/Migration matrix
     bool Print_migration_matrix_bool{false};
 
     std::vector<double> MRCA_time;
@@ -117,12 +117,12 @@ struct info_collector_c
     std::array<double, 3> Nbr_depl_0_1_tot{0, 0, 0};
     std::vector<std::vector<int>> Emp_cumul_axial_disp;
     std::vector<std::vector<double>> Emp_axial_disp;
-    std::vector<double> Mean_emp_axial_disp, Sig_emp_axial_disp, Kurt_emp_axial_disp;
+    std::vector<double> Mean_emp_axial_disp, Sig_emp_axial_disp, Kurt_emp_axial_disp, Skew_emp_axial_disp;
     std::vector<std::vector<double>> Emp_axial_disp_mean_over_rep;
-    std::vector<double> Mean_emp_axial_disp_mean_over_rep, Sig_emp_axial_disp_mean_over_rep, Kurt_emp_axial_disp_mean_over_rep;
+    std::vector<double> Mean_emp_axial_disp_mean_over_rep, Sig_emp_axial_disp_mean_over_rep, Kurt_emp_axial_disp_mean_over_rep, Skew_emp_axial_disp_mean_over_rep;
 
     std::vector<double> Fwd_axial_disp_distrib;
-    double Fwd_axial_disp_mean, Fwd_axial_disp_theo_sig, Fwd_axial_disp_sig, Fwd_axial_disp_kurt, Ds2;
+    double Fwd_axial_disp_mean, Fwd_axial_disp_theo_sig, Fwd_axial_disp_sig, Fwd_axial_disp_kurt, Fwd_axial_disp_skew, Ds2;
     std::vector<std::vector<double>> Cumul_fwd_disp_distrib;
     std::vector<std::vector<double>> Bcwd_disp_distrib_from_migration_matrix;
     std::vector<std::vector<double>> Cumul_bcwd_disp_distrib_from_migration_matrix;

@@ -142,44 +142,41 @@ fwd_disp_distrib_c::fwd_disp_distrib_c(demo_param_c const &demo_param)
 
     auto &info_collect = singleton_c<info_collector_c>::instance();
 
-    if (info_collect.Check_disp_distrib)
+    if (demo_param.Dispersal_distrib == dispersal_distrib_enum::uniform)
     {
-        if (demo_param.Dispersal_distrib == dispersal_distrib_enum::uniform)
-        {
-            info_collect.Fwd_axial_disp_theo_sig = INFINITY;
-        }
-        if (demo_param.Dispersal_distrib == dispersal_distrib_enum::geometric)
-        {
-            //        if(!Simple1DProductDispBool) {//RL072014 wascmp_nocase(twoD_disp,"1DProductWithoutm0")==0) {
-            //            long double condsig2;
-            //            if (dimRes2/vide>1) { //2D
-            //              /*cf code R
-            //                condaxialS2fromg<-function(gv) {
-            //                    return((1+gv)/((2-gv)*(1-gv)^2))
-            //                }\n\                      */
-            //                condsig2=(1.+GeoG)/((2-GeoG)*(1.-GeoG)*(1.-GeoG));
-            //            } else {
-            //                condsig2=(1.+GeoG)/((1.-GeoG)*(1.-GeoG));
-            //            }
-            //            Nhm=ploidy*TVpars[0].initialDens*Mig;
-            //            Dhs2=Nhm*condsig2;
-            //            sig2=condsig2*Mig;
-            //        } else {
-            info_collect.Fwd_axial_disp_theo_sig = demo_param.Proba_migr * (1. + demo_param.G_geo_param) / ((1. - demo_param.G_geo_param) * (1. - demo_param.G_geo_param));
-        }
-        if (demo_param.Dispersal_distrib == dispersal_distrib_enum::pareto)
-        {
-            info_collect.Fwd_axial_disp_theo_sig = NAN; // TODO il doit bien exister une formule.
-        }
-        //    if (model_mig=='S') {
-        ////cout<<"non charfunc fraction: "<<SichelDispPars[3]<<endl;
-        //        if (SichelDispPars[2]<0) {
-        //            sig2=-(1.-SichelDispPars[3])*SichelDispPars[1]/(2.*(1.+SichelDispPars[0]));
-        //        } else {
-        //            sig2=-(1.-SichelDispPars[3])*SichelDispPars[1]*bessel_k(1.+SichelDispPars[0],SichelDispPars[2],1)
-        //                                            /(2.*bessel_k(SichelDispPars[0],SichelDispPars[2],1));
-        //        }
+        info_collect.Fwd_axial_disp_theo_sig = INFINITY;
     }
+    if (demo_param.Dispersal_distrib == dispersal_distrib_enum::geometric)
+    {
+        //        if(!Simple1DProductDispBool) {//RL072014 wascmp_nocase(twoD_disp,"1DProductWithoutm0")==0) {
+        //            long double condsig2;
+        //            if (dimRes2/vide>1) { //2D
+        //              /*cf code R
+        //                condaxialS2fromg<-function(gv) {
+        //                    return((1+gv)/((2-gv)*(1-gv)^2))
+        //                }\n\                      */
+        //                condsig2=(1.+GeoG)/((2-GeoG)*(1.-GeoG)*(1.-GeoG));
+        //            } else {
+        //                condsig2=(1.+GeoG)/((1.-GeoG)*(1.-GeoG));
+        //            }
+        //            Nhm=ploidy*TVpars[0].initialDens*Mig;
+        //            Dhs2=Nhm*condsig2;
+        //            sig2=condsig2*Mig;
+        //        } else {
+        info_collect.Fwd_axial_disp_theo_sig = demo_param.Proba_migr * (1. + demo_param.G_geo_param) / ((1. - demo_param.G_geo_param) * (1. - demo_param.G_geo_param));
+    }
+    if (demo_param.Dispersal_distrib == dispersal_distrib_enum::pareto)
+    {
+        info_collect.Fwd_axial_disp_theo_sig = NAN; // TODO il doit bien exister une formule.
+    }
+    //    if (model_mig=='S') {
+    ////cout<<"non charfunc fraction: "<<SichelDispPars[3]<<endl;
+    //        if (SichelDispPars[2]<0) {
+    //            sig2=-(1.-SichelDispPars[3])*SichelDispPars[1]/(2.*(1.+SichelDispPars[0]));
+    //        } else {
+    //            sig2=-(1.-SichelDispPars[3])*SichelDispPars[1]*bessel_k(1.+SichelDispPars[0],SichelDispPars[2],1)
+    //                                            /(2.*bessel_k(SichelDispPars[0],SichelDispPars[2],1));
+    //        }
     if (demo_param.Disp_dist_max[1] == demo_param.Disp_dist_max[0])
     {
         Fwd_distrib[1] = Fwd_distrib[0];
@@ -217,24 +214,24 @@ std::shared_ptr<std::vector<double>> fwd_disp_distrib_c::construct_fwd_disp_dist
     }
 
     auto &info_collect = singleton_c<info_collector_c>::instance();
-    if (info_collect.Check_disp_distrib)
+    if (info_collect.Fwd_axial_disp_distrib.empty())
     {
-        if (info_collect.Fwd_axial_disp_distrib.empty())
-        {
-            info_collect.Fwd_axial_disp_distrib.reserve(dist_max + 1);
-            info_collect.Fwd_axial_disp_mean = 0.0;
-            info_collect.Fwd_axial_disp_sig = 0.0;
-            info_collect.Fwd_axial_disp_kurt = 0.0;
+        info_collect.Fwd_axial_disp_distrib.reserve(dist_max + 1);
+        info_collect.Fwd_axial_disp_mean = 0.0;
+        info_collect.Fwd_axial_disp_sig = 0.0;
+        info_collect.Fwd_axial_disp_skew = 0.0;
+        info_collect.Fwd_axial_disp_kurt = 0.0;
 
-            for (int i = 0; i <= dist_max; ++i)
-            {
-                info_collect.Fwd_axial_disp_distrib.push_back(fwd_distrib->at(i));
-                info_collect.Fwd_axial_disp_mean += info_collect.Fwd_axial_disp_distrib.at(i) * i;
-                info_collect.Fwd_axial_disp_sig += info_collect.Fwd_axial_disp_distrib.at(i) * i * i;
-                info_collect.Fwd_axial_disp_kurt += info_collect.Fwd_axial_disp_distrib.at(i) * i * i * i * i;
-            }
-            info_collect.Fwd_axial_disp_kurt = info_collect.Fwd_axial_disp_kurt / (info_collect.Fwd_axial_disp_sig * info_collect.Fwd_axial_disp_sig) - 3.0;
+        for (int i = 0; i <= dist_max; ++i)
+        {
+            info_collect.Fwd_axial_disp_distrib.push_back(fwd_distrib->at(i));
+            info_collect.Fwd_axial_disp_mean += info_collect.Fwd_axial_disp_distrib.at(i) * i;
+            info_collect.Fwd_axial_disp_sig += info_collect.Fwd_axial_disp_distrib.at(i) * i * i;
+            info_collect.Fwd_axial_disp_skew += info_collect.Fwd_axial_disp_distrib.at(i) * i * i * i;
+            info_collect.Fwd_axial_disp_kurt += info_collect.Fwd_axial_disp_distrib.at(i) * i * i * i * i;
         }
+        info_collect.Fwd_axial_disp_kurt = info_collect.Fwd_axial_disp_kurt / (info_collect.Fwd_axial_disp_sig * info_collect.Fwd_axial_disp_sig) - 3.0;
+        info_collect.Fwd_axial_disp_skew = info_collect.Fwd_axial_disp_skew / pow(info_collect.Fwd_axial_disp_sig, double(3/2));
     }
 
     return fwd_distrib;
@@ -259,24 +256,21 @@ cumul_fwd_disp_distrib_c::cumul_fwd_disp_distrib_c(rand_gen_c *rand_gen, fwd_dis
     }
 
     auto &info_collect = singleton_c<info_collector_c>::instance();
-    if (info_collect.Check_disp_distrib)
+    if (fwd_distrib[0] == fwd_distrib[1])
     {
-        if (fwd_distrib[0] == fwd_distrib[1])
-        {
-            info_collect.Cumul_fwd_disp_distrib.resize(1);
-        }
-        else
-        {
-            info_collect.Cumul_fwd_disp_distrib.resize(2);
-        }
+        info_collect.Cumul_fwd_disp_distrib.resize(1);
+    }
+    else
+    {
+        info_collect.Cumul_fwd_disp_distrib.resize(2);
+    }
 
-        for (std::size_t i = 0; i < info_collect.Cumul_fwd_disp_distrib.size(); ++i)
+    for (std::size_t i = 0; i < info_collect.Cumul_fwd_disp_distrib.size(); ++i)
+    {
+        info_collect.Cumul_fwd_disp_distrib.at(i).resize(Cumul_fwd_distrib.at(i)->size());
+        for (std::size_t j = 0; j < info_collect.Cumul_fwd_disp_distrib.at(i).size(); ++j)
         {
-            info_collect.Cumul_fwd_disp_distrib.at(i).resize(Cumul_fwd_distrib.at(i)->size());
-            for (std::size_t j = 0; j < info_collect.Cumul_fwd_disp_distrib.at(i).size(); ++j)
-            {
-                info_collect.Cumul_fwd_disp_distrib.at(i).at(std::get<0>(Cumul_fwd_distrib.at(i)->at(j)) + fwd_distrib[i].size() - 1) = 1. * std::get<1>(Cumul_fwd_distrib.at(i)->at(j)) / static_cast<double>(PRECISION);
-            }
+            info_collect.Cumul_fwd_disp_distrib.at(i).at(std::get<0>(Cumul_fwd_distrib.at(i)->at(j)) + fwd_distrib[i].size() - 1) = 1. * std::get<1>(Cumul_fwd_distrib.at(i)->at(j)) / static_cast<double>(PRECISION);
         }
     }
 }

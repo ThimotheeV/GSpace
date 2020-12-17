@@ -365,6 +365,18 @@ void output_stat_files(simu_param_c const &simu_p, info_collector_c const &info,
         stats_run[2] += "\n";
         //Add double to stream to set the precision & width
         streamObj.str(""); streamObj.clear();
+        streamObj << info.Skew_emp_axial_disp.at(0);
+        stats_run[2] += "Empirical dispersal skewness (X [, Y]) :\t" + streamObj.str();
+         if (info.Skew_emp_axial_disp.size() == 2)
+         {
+             //Add double to stream to set the precision & width
+             streamObj.str(""); streamObj.clear();
+             streamObj << info.Skew_emp_axial_disp.at(1);
+             stats_run[2] += "\t" + streamObj.str();
+         }
+        stats_run[2] += "\n";
+        //Add double to stream to set the precision & width
+        streamObj.str(""); streamObj.clear();
         streamObj << info.Kurt_emp_axial_disp.at(0);
         stats_run[2] += "Empirical dispersal kurtosis (X [, Y]) :\t" + streamObj.str();
          if (info.Kurt_emp_axial_disp.size() == 2)
@@ -926,68 +938,66 @@ void write_afterrun_param_settings_summary(std::string const &path_to_file, simu
     {
         auto &info_collect = singleton_c<info_collector_c>::instance();
 
-        if (info_collect.Check_disp_distrib)
+        if (!simu_param.Migration_matrix)
         {
-            if (!simu_param.Migration_matrix)
+            param_summary_f << std::endl
+                            << "Forward axial dispersal distribution (step, prob) : " << std::endl;
+            int step = 0;
+            for (auto const &info : info_collect.Fwd_axial_disp_distrib)
             {
-                param_summary_f << std::endl
-                                << "Forward axial dispersal distribution (step, prob) : " << std::endl;
-                int step = 0;
-                for (auto const &info : info_collect.Fwd_axial_disp_distrib)
-                {
-                    ++step;
-                    param_summary_f << step << "\t" << std::setprecision(15) << std::setw(17) << (info) << std::endl;
-                }
-
-                param_summary_f << std::endl
-                                << "Forward axial dispersal mean (within dist_max) : " << info_collect.Fwd_axial_disp_mean << std::endl;
-                param_summary_f << "Theoretical sigma2 without bounds : " << info_collect.Fwd_axial_disp_theo_sig << std::endl;
-                param_summary_f << "Forward axial dispersal sigma2 (within dist_max) : " << info_collect.Fwd_axial_disp_sig << std::endl;
-                param_summary_f << "Forward axial dispersal kurtosis (within dist_max) : " << info_collect.Fwd_axial_disp_kurt << std::endl;
-                param_summary_f << "\nIf kurtosis appears wrong there may be many reasons" << std::endl;
-                param_summary_f << "   It may be because the dispersal distribution is not" << std::endl;
-                param_summary_f << "   computed with enough precision." << std::endl;
+                param_summary_f << step << "\t" << std::setprecision(15) << std::setw(17) << (info) << std::endl;
+                ++step;
             }
-            if (!(simu_param.Migration_matrix || simu_param.Nodesize_matrix))
-            {
-                info_collect.Ds2 = samp_param.Ploidy * demo_param.Pop_size_per_node * info_collect.Fwd_axial_disp_sig;
-                param_summary_f << std::endl
-                                << "Dsigma2 (within bounds) : " << info_collect.Ds2 << std::endl;
-                param_summary_f << "Neighborhood size (within bounds) : " << (2.0 * info_collect.Ds2) << " (1D) or " << (2.0 * PI * info_collect.Ds2) << " (2D)." << std::endl;
-                param_summary_f << "Expected slope (within bounds) : " << 1. / (2.0 * info_collect.Ds2) << " (1D) or " << 1.0 / (2.0 * PI * info_collect.Ds2) << " (2D)." << std::endl;
 
-                param_summary_f << std::endl
-                                << "Cumulative forward axial dispersal distribution";
-                if (info_collect.Cumul_fwd_disp_distrib.size() == 2)
-                {
-                    param_summary_f << " on dim1";
-                }
-                else
-                {
-                    param_summary_f << " on both dimensions";
-                }
-                param_summary_f << " (move, prob) : " << std::endl;
-                for (auto move = -demo_param.Disp_dist_max[0]; move <= demo_param.Disp_dist_max[0]; ++move)
-                {
-                    param_summary_f << move << "\t" << std::setprecision(15) << std::setw(17) << info_collect.Cumul_fwd_disp_distrib[0][move + demo_param.Disp_dist_max[0]] << std::endl;
-                }
-                if (info_collect.Cumul_fwd_disp_distrib.size() == 2)
-                {
-                    param_summary_f << std::endl << "Cumulative forward dispersal distribution on dim2 (move, prob) : " << std::endl;
-                    for (auto move = -demo_param.Disp_dist_max[1]; move <= demo_param.Disp_dist_max[1]; ++move)
-                    {
-                        param_summary_f << move << "\t" << std::setprecision(15) << std::setw(17) << info_collect.Cumul_fwd_disp_distrib[1][move + demo_param.Disp_dist_max[1]] << std::endl;
-                    }
-                }
+            param_summary_f << std::endl
+                            << "Forward axial dispersal mean (within dist_max) : " << info_collect.Fwd_axial_disp_mean << std::endl;
+            param_summary_f << "Theoretical sigma2 without bounds : " << info_collect.Fwd_axial_disp_theo_sig << std::endl;
+            param_summary_f << "Forward axial dispersal sigma2 (within dist_max) : " << info_collect.Fwd_axial_disp_sig << std::endl;
+            param_summary_f << "Forward axial dispersal skewness (within dist_max) : " << info_collect.Fwd_axial_disp_skew << std::endl;
+            param_summary_f << "Forward axial dispersal kurtosis (within dist_max) : " << info_collect.Fwd_axial_disp_kurt << std::endl;
+            param_summary_f << "\nIf kurtosis/skewness appears wrong there may be many reasons" << std::endl;
+            param_summary_f << "   It may be because the dispersal distribution is not" << std::endl;
+            param_summary_f << "   computed with enough precision." << std::endl;
+        }
+        if (!(simu_param.Migration_matrix || simu_param.Nodesize_matrix))
+        {
+            info_collect.Ds2 = samp_param.Ploidy * demo_param.Pop_size_per_node * info_collect.Fwd_axial_disp_sig;
+            param_summary_f << std::endl
+                            << "Dsigma2 (within bounds) : " << info_collect.Ds2 << std::endl;
+            param_summary_f << "Neighborhood size (within bounds) : " << (2.0 * info_collect.Ds2) << " (1D) or " << (2.0 * PI * info_collect.Ds2) << " (2D)." << std::endl;
+            param_summary_f << "Expected slope (within bounds) : " << 1. / (2.0 * info_collect.Ds2) << " (1D) or " << 1.0 / (2.0 * PI * info_collect.Ds2) << " (2D)." << std::endl;
+
+            param_summary_f << std::endl
+                            << "Cumulative forward axial dispersal distribution";
+            if (info_collect.Cumul_fwd_disp_distrib.size() == 2)
+            {
+                param_summary_f << " on dim1";
             }
             else
             {
-                param_summary_f << std::endl
-                                << "Neither Dsigma2, slope can be computed because a custom Nodesize matrix and/or a custom Migration matrix was considered." << std::endl;
+                param_summary_f << " on both dimensions";
+            }
+            param_summary_f << " (move, prob) : " << std::endl;
+            for (auto move = -demo_param.Disp_dist_max[0]; move <= demo_param.Disp_dist_max[0]; ++move)
+            {
+                param_summary_f << move << "\t" << std::setprecision(15) << std::setw(17) << info_collect.Cumul_fwd_disp_distrib[0][move + demo_param.Disp_dist_max[0]] << std::endl;
+            }
+            if (info_collect.Cumul_fwd_disp_distrib.size() == 2)
+            {
+                param_summary_f << std::endl << "Cumulative forward dispersal distribution on dim2 (move, prob) : " << std::endl;
+                for (auto move = -demo_param.Disp_dist_max[1]; move <= demo_param.Disp_dist_max[1]; ++move)
+                {
+                    param_summary_f << move << "\t" << std::setprecision(15) << std::setw(17) << info_collect.Cumul_fwd_disp_distrib[1][move + demo_param.Disp_dist_max[1]] << std::endl;
+                }
             }
         }
+        else
+        {
+            param_summary_f << std::endl
+                            << "Neither Dsigma2, slope can be computed because a custom Nodesize matrix and/or a custom Migration matrix was considered." << std::endl;
+        }
 
-        if (simu_param.Migration_matrix && info_collect.Print_migration_matrix_bool)
+        if (simu_param.Migration_matrix && (info_collect.Print_migration_matrix_bool || info_collect.Effective_disp))
         {
             param_summary_f << std::endl
                             << "Forward migration matrix (forward migration rate m_LiCj from node i (xf, yf) -> node y (xt,yt) with i = 1 + (xf - 1)*(LatSizeX + 1) + (yj - 1) and j = 1 + (xt - 1)*(LatSizeX + 1) + (yt - 1) ) : " << std::endl;
@@ -1077,6 +1087,7 @@ void write_afterrun_param_settings_summary(std::string const &path_to_file, simu
                     info_collect.Mean_emp_axial_disp_mean_over_rep[dim] += (*itr2) * fabs(dist);
                     info_collect.Sig_emp_axial_disp_mean_over_rep[dim] += (*itr2) * dist * dist;
                     info_collect.Kurt_emp_axial_disp_mean_over_rep[dim] += (*itr2) * dist * dist * dist * dist;
+                    info_collect.Skew_emp_axial_disp_mean_over_rep[dim] += (*itr2) * dist * dist * dist;
                     check_sum += (*itr2);
                 }
                 if ( fabs(1.0 - check_sum) > DBL_EPSILON)
@@ -1084,6 +1095,7 @@ void write_afterrun_param_settings_summary(std::string const &path_to_file, simu
                     throw std::logic_error("( During computation of the mean empirical dispersal distribution among runs, GSpace found that the sum of distribution terms is not 1.0 but " + std::to_string(check_sum) + "\nContact the developpers. I exit. )");
                 }
                 info_collect.Kurt_emp_axial_disp_mean_over_rep[dim] = info_collect.Kurt_emp_axial_disp_mean_over_rep[dim] / (info_collect.Sig_emp_axial_disp_mean_over_rep[dim] * info_collect.Sig_emp_axial_disp_mean_over_rep[dim]) - 3.0;
+                info_collect.Skew_emp_axial_disp_mean_over_rep[dim] = info_collect.Skew_emp_axial_disp_mean_over_rep[dim] / pow(info_collect.Sig_emp_axial_disp_mean_over_rep[dim],double(3/2));
             }
 
             param_summary_f << std::endl
@@ -1097,6 +1109,12 @@ void write_afterrun_param_settings_summary(std::string const &path_to_file, simu
             if (info_collect.Sig_emp_axial_disp_mean_over_rep.size() == 2)
             {
                 param_summary_f << "\t" << std::setprecision(15) << std::setw(17) << info_collect.Sig_emp_axial_disp_mean_over_rep[1];
+            }
+            param_summary_f << std::endl;
+            param_summary_f << "Empirical dispersal skewness (X [, Y]) : " << std::setprecision(15) << std::setw(17) << info_collect.Skew_emp_axial_disp_mean_over_rep[0];
+            if (info_collect.Skew_emp_axial_disp_mean_over_rep.size() == 2)
+            {
+                param_summary_f << "\t" << std::setprecision(15) << std::setw(17) << info_collect.Skew_emp_axial_disp_mean_over_rep[1];
             }
             param_summary_f << std::endl;
             param_summary_f << "Empirical dispersal kurtosis (X [, Y]) : " << std::setprecision(15) << std::setw(17) << info_collect.Kurt_emp_axial_disp_mean_over_rep[0];

@@ -59,17 +59,20 @@ void sample_simulator(output_stat_c &output_stat, int rep)
         info_collect.Mean_emp_axial_disp.clear();
         info_collect.Sig_emp_axial_disp.clear();
         info_collect.Kurt_emp_axial_disp.clear();
+        info_collect.Skew_emp_axial_disp.clear();
         info_collect.Emp_axial_disp.resize(dim);
         info_collect.Emp_cumul_axial_disp.resize(dim);
         info_collect.Mean_emp_axial_disp.resize(dim, 0.0);
         info_collect.Sig_emp_axial_disp.resize(dim, 0.0);
         info_collect.Kurt_emp_axial_disp.resize(dim, 0.0);
+        info_collect.Skew_emp_axial_disp.resize(dim, 0.0);
         if (rep == 0)
         {
             info_collect.Emp_axial_disp_mean_over_rep.resize(dim);
             info_collect.Mean_emp_axial_disp_mean_over_rep.resize(dim, 0.0);
             info_collect.Sig_emp_axial_disp_mean_over_rep.resize(dim, 0.0);
             info_collect.Kurt_emp_axial_disp_mean_over_rep.resize(dim, 0.0);
+            info_collect.Skew_emp_axial_disp_mean_over_rep.resize(dim, 0.0);
         }
 
         auto itr2 = info_collect.Emp_cumul_axial_disp.begin();
@@ -179,6 +182,7 @@ void sample_simulator(output_stat_c &output_stat, int rep)
                         info_collect.Mean_emp_axial_disp[dim] += (*itr22) * fabs(dist);
                         info_collect.Sig_emp_axial_disp[dim] += (*itr22) * dist * dist;
                         info_collect.Kurt_emp_axial_disp[dim] += (*itr22) * dist * dist * dist * dist;
+                        info_collect.Skew_emp_axial_disp[dim] += (*itr22) * dist * dist * dist;
                         check_sum += (*itr22);
                         (*itr32) += (*itr22) / simu_param.Repetition_nbr;
                         //                        std::cout << "dim=" << dim << " *itr22 " << *itr22 << " = *itr12 " << *itr12 << " / total_disp_draw_nbr " << total_disp_draw_nbr << std::endl;
@@ -189,6 +193,7 @@ void sample_simulator(output_stat_c &output_stat, int rep)
                         throw std::logic_error("( During computation of empirical dispersal distribution, GSpace found that the sum of distribution terms is not 1.0 but " + std::to_string(check_sum) + "\nContact the developpers. I exit. )");
                     }
                     info_collect.Kurt_emp_axial_disp[dim] = info_collect.Kurt_emp_axial_disp[dim] / (info_collect.Sig_emp_axial_disp[dim] * info_collect.Sig_emp_axial_disp[dim]) - 3.0;
+                    info_collect.Skew_emp_axial_disp[dim] = info_collect.Skew_emp_axial_disp[dim] / pow(info_collect.Sig_emp_axial_disp[dim],double(3/2));
 
                     ++dim;
                 }

@@ -217,7 +217,7 @@ void parser_str(std::string const &file_str)
             simu_param.Coordinates_output = convert_str_bool(line_pair_key_value[1]);
             continue;
         }
-        if (param_name == "seqcharfile" || param_name == "sequencecharacteristicsfile")
+        if (param_name == "seqcharfile" || param_name == "sequencecharacteristicsfile" || param_name == "sequencecharacteristicfile")
         {
             simu_param.Seq_char_output = convert_str_bool(line_pair_key_value[1]);
             continue;
