@@ -1,0 +1,51 @@
+%%%%% SIMULATION PARAMETERS %%%%%%%%%%%%
+Run_Number=555
+Random_Seeds=1235055
+Approximate Time = FALSE
+
+%%%%%% OUTPUT FILE FORMAT OPTIONS %%%%%%%
+%Genepop=F
+%Nexus_file_format = Haplotypes_only
+
+%%%%% MARKERS PARAMETER S%%%%%%%%%%%%%%%
+Ploidy=Diploid
+Locus_Number=2
+Mutation_Rate=0.00001
+Mutation_Model=KAM
+Allelic_Lower_Bound=4
+Allelic_Upper_Bound=10
+MRCA_Allelic_Sequence=5,6;7,4
+%Min_Allele_Number=1
+
+%% SEQUENCE SPECIFIC SETTINGS
+Sequence_Length = 2
+p_GSM= 0.38
+Transition_Transversion_ratio= 0.7
+Transition1_Transition2_ratio = 1.5
+Equilibrium_Frequencies = 0.1,0.3,0.4,0.2
+
+%%%%% RECOMBINAISON PARAMETER S%%%%%%%%%%%%%%%
+Recombination_Rate=0.01
+
+%%%%%%%% DEMOGRAPHIC OPTIONS %%%%%%%%%%%%%
+%% LATTICE
+Lattice_boundaries=Absorbing
+Lattice_SizeX=3
+Lattice_SizeY=3
+Ind_Per_Node=10
+
+%% SAMPLE
+Sample_SizeX=2
+Sample_SizeY=2
+Min_Sample_CoordinateX=1
+Min_Sample_CoordinateY=1
+Ind_Per_Node_Sampled=3
+
+%% DISPERSAL
+Dispersal_Distribution=g
+Geometric_Shape=0.2
+Total_Emigration_Rate=0.2
+Disp_dist_max=1
+
+%%%%%%%%%% VARIOUS COMPUTATION OPTIONS %%%
+Post_Sim_Computation=Prob_Id_1_2_loc, Q_stat

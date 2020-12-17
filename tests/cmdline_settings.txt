@@ -1,0 +1,3 @@
+./GSpace
+Setting_filename=Settings.txt
+Output_dir=Trash

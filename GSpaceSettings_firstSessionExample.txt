@@ -1,0 +1,35 @@
+%%%%%%%% SIMULATION SETTINGS %%%%%%%%%%%%%%%
+Data_filename=Example
+Run_Number=10
+
+%%%%%%%% OUTPUT FILE FORMAT SETTINGS %%%%%%%
+Genepop=true
+
+%%%%%%%% MARKERS SETTINGS %%%%%%%%%%%%%%%%%%
+Chromosome_number=5
+Mutation_Rate=0.0005
+Mutation_Model=SMM
+Allelic_Lower_Bound=1
+Allelic_Upper_Bound=200
+Sequence_Size = 3
+
+%%%%%%%% RECOMBINATION SETTINGS %%%%%%%%%%%%
+Recombination_Rate=0.0005
+
+%%%%%%%% DEMOGRAPHIC SETTINGS %%%%%%%%%%%%%%
+%% LATTICE
+Lattice_SizeX=20
+Lattice_SizeY=20
+Ind_Per_Pop=30
+
+%% DISPERSAL
+Dispersal_Distribution=uniform
+Dist_max = 1,1
+Total_Emigration_Rate=0.05
+
+%%%%%%%% SAMPLE SETTINGS %%%%%%%%%%%%%%%%%%%
+Sample_SizeX=2
+Sample_SizeY=2
+Min_Sample_CoordinateX=9
+Min_Sample_CoordinateY=12
+Ind_Per_Pop_Sampled=5
