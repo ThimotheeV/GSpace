@@ -1184,7 +1184,7 @@ void check_param()
 void apply_param()
 {
     static bool executed = false;
-    //A Raph : Je ne comprend pas l'utilité ?
+    //TODO @Raph : Je ne comprend pas l'utilité ?
     if (executed)
     {
         throw std::logic_error("( apply_param() has been called twice... I exit. )");
@@ -1196,6 +1196,15 @@ void apply_param()
     auto &samp_param = singleton_c<samp_param_c>::instance();
     auto &recomb_param = singleton_c<recomb_param_c>::instance();
     auto &muta_param = singleton_c<muta_param_c>::instance();
+
+    //No dispertion if lattice_size < 2
+    for (int dim = 0; dim < 2; ++dim)
+    {
+        if (demo_param.Lattice_size.at(dim) < 2)
+        {
+            demo_param.Disp_dist_max.at(dim) = 0;
+        }
+    }
 
     if (demo_param.Dispersal_distrib == dispersal_distrib_enum::uniform)
     {
@@ -1340,11 +1349,11 @@ void output_screen_info(std::string const &version, simu_param_c const &simu_par
     else
     {
         std::cout << "User specified sample size for each sampled node on a squarre (" << demo_param.Nbr_node_sampled_x << " x " << demo_param.Nbr_node_sampled_y << ") :" << std::endl;
-        size_t node=0;
+        size_t node = 0;
         for (auto node_sample_size : samp_param.Sample_size_per_node)
         {
             std::cout << " " << node_sample_size << "(" << samp_param.Sample_coord_vec.at(node)[0] << "," << samp_param.Sample_coord_vec.at(node)[1] << ")";
-            node+=node_sample_size;
+            node += node_sample_size;
         }
         std::cout << std::endl;
         std::cout << " with a total sample size of : " << samp_param.n_total_sample_size;
@@ -1372,7 +1381,7 @@ void output_screen_info(std::string const &version, simu_param_c const &simu_par
     {
         std::cout << "Custom migration matrix given in the file " << simu_param.Migration_matrix_filename << "." << std::endl;
     }
-    std::cout << "Dispersal settings are summarized in the 'simu_params.txt' file. " << std::endl;
+    std::cout << "Dispersal settings are summarized in the "<< simu_param.Generic_data_filename + simu_param.Param_summary_filename <<" file. " << std::endl;
     std::cout << "============================================================================\n"
               << std::endl;
 }
