@@ -8,9 +8,8 @@
 //int left_brkpt_l, int right_brkpt_r, int num_node_u, std::vector<int> childs_node, double T_time, int gen
 using coa_event_t = std::tuple<int, int, int, std::vector<int>, double, int>;
 //one tree : vector over each nodes
-// std::vector<std::tuple<childs_node, time_t, gen, nbr_leaf_for_node>>;
-// WARNING TODO : problematique lors multi coa meme numero node donc écrasement possible.
-using top_down_tree_t = std::vector<std::tuple<std::vector<int>, double, int, int>>;
+// std::vector<std::tuple<childs_node, time_t, gen>>;
+using top_down_tree_t = std::vector<std::tuple<std::vector<int>, double, int>>;
 
 // For unit testing
 // declaration to have total acces to CoalescenceTableTest for testing
@@ -29,6 +28,8 @@ public:
   void set_coa_event(int left_brkpt_l, int right_brkpt_r, int num_node_u, std::vector<int> childs_node, double T_time, int gen);
   // setter : copy coa event for copy coa_table by part (when copy Coalescence_table is needed)
   void set_coa_event(coa_event_t event);
+  //needed by Tskit
+  void sort_by_num_u(std::size_t index_begin_zone_at_group);
   // transform multiple coa events occuring at the same time, into a single multiple coa event
   void group_multi_coa(std::size_t index_begin_zone_at_group);
   //getter whole vector
@@ -40,13 +41,18 @@ public:
   // Need in sort algorithm for table I and R
   std::vector<coa_event_t>::iterator begin();
   std::vector<coa_event_t>::iterator end();
+
+  std::vector<coa_event_t>::const_iterator begin() const;
+  std::vector<coa_event_t>::const_iterator end() const;
   std::size_t size();
 
   // getter for specific parts of a coa event
   // static function for optimization
   // static because does not need the whole class (= do not need this)
   // but only the coa event
+  static int &get_left_brkpt_l(coa_event_t &event);
   static int const &get_left_brkpt_l(coa_event_t const &event);
+  static int &get_right_brkpt_r(coa_event_t &event);
   static int const &get_right_brkpt_r(coa_event_t const &event);
   static int const &get_num_node_u(coa_event_t const &event);
   static std::vector<int> const &get_childs_node_c(coa_event_t const &event);
@@ -68,9 +74,6 @@ struct tree_gen_c : coa_table_c
 
   // getter : extract the next tree
   top_down_tree_t const &get_tree();
-  // compute the nbr_leaf for one node
-  // TODO : a conditionner aux settings pour optimisation
-  int nbr_leaf_for_node(std::vector<int> const &node_childs);
 
   // compute and stock next Ancestry_tree
   // tuple<start brkpt, end brkpt, MRCA time>

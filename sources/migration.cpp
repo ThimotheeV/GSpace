@@ -231,7 +231,7 @@ std::shared_ptr<std::vector<double>> fwd_disp_distrib_c::construct_fwd_disp_dist
             info_collect.Fwd_axial_disp_kurt += info_collect.Fwd_axial_disp_distrib.at(i) * i * i * i * i;
         }
         info_collect.Fwd_axial_disp_kurt = info_collect.Fwd_axial_disp_kurt / (info_collect.Fwd_axial_disp_sig * info_collect.Fwd_axial_disp_sig) - 3.0;
-        info_collect.Fwd_axial_disp_skew = info_collect.Fwd_axial_disp_skew / pow(info_collect.Fwd_axial_disp_sig, double(3/2));
+        info_collect.Fwd_axial_disp_skew = info_collect.Fwd_axial_disp_skew / pow(info_collect.Fwd_axial_disp_sig, double(3 / 2));
     }
 
     return fwd_distrib;
@@ -379,6 +379,7 @@ cumul_bcwd_disp_distrib_c::cumul_bcwd_disp_distrib_c(rand_gen_c *rand_gen, node_
 
 void cumul_bcwd_disp_distrib_c::calc_bcwd_distrib(extend_lattice_c &rmap)
 {
+    std::cout<<"Salut"<<std::endl;
     Cumul_bcwd_distrib = rmap.cumul_normalized_bcwd(rmap.compute_migr_nb_reaching_focal_node(Node_lati.Lat.Boundary_effect, Node_lati.Coord));
 }
 
@@ -475,9 +476,9 @@ lattice_c::lattice_c(rand_gen_c &rand_gen, std::vector<fwd_disp_distrib_c> &fwd_
 
     auto fwd_disp_matx_itr = fwd_disp_matx.begin();
 
-    for (int x = 0; x <= Lat_size[0]; ++x)
+    for (int x = 0; x < Lat_size[0]; ++x)
     {
-        for (int y = 0; y <= Lat_size[1]; ++y)
+        for (int y = 0; y < Lat_size[1]; ++y)
         {
             Lattice.back().Fwd_distrib = std::move(*fwd_disp_matx_itr);
             ++fwd_disp_matx_itr;
@@ -507,11 +508,11 @@ lattice_c::lattice_c(std::vector<std::vector<int>> const &subpopsize_mat, rand_g
 
 void lattice_c::assign_homogeneous_subpopsizes(int const &subpopsize, rand_gen_c &rand_gen)
 {
-    Lattice.reserve((Lat_size[0] + 1) * (Lat_size[1] + 1));
+    Lattice.reserve((Lat_size[0]) * (Lat_size[1]));
 
-    for (int x = 0; x <= Lat_size[0]; ++x)
+    for (int x = 0; x < Lat_size[0]; ++x)
     {
-        for (int y = 0; y <= Lat_size[1]; ++y)
+        for (int y = 0; y < Lat_size[1]; ++y)
         {
             //Bcwd_distrib of each node needs a reference to rand_gen, and a reference can not be empty
             Lattice.emplace_back(*this, std::array<int, 2>{x, y}, subpopsize, &rand_gen);
@@ -521,11 +522,11 @@ void lattice_c::assign_homogeneous_subpopsizes(int const &subpopsize, rand_gen_c
 
 void lattice_c::assign_custom_subpopsizes(std::vector<std::vector<int>> const &subpopsize_mat, rand_gen_c &rand_gen)
 {
-    Lattice.reserve((Lat_size[0] + 1) * (Lat_size[1] + 1));
+    Lattice.reserve((Lat_size[0]) * (Lat_size[1]));
 
-    for (int x = 0; x <= Lat_size[0]; ++x)
+    for (int x = 0; x < Lat_size[0]; ++x)
     {
-        for (int y = 0; y <= Lat_size[1]; ++y)
+        for (int y = 0; y < Lat_size[1]; ++y)
         {
             Lattice.emplace_back(*this, std::array<int, 2>{x, y}, subpopsize_mat[x][y], &rand_gen);
         }
@@ -537,18 +538,18 @@ void lattice_c::compute_bcwd_disp_distrib(std::vector<std::vector<double>> const
     auto &info_collect = singleton_c<info_collector_c>::instance();
     if (info_collect.Print_migration_matrix_bool)
     {
-        info_collect.Bcwd_disp_distrib_from_migration_matrix.resize((Lat_size[0] + 1) * (Lat_size[1] + 1)); // TDODO ? remplacer (Lat_size[0] + 1) * (Lat_size[1] + 1) par Lattice.size() ?
+        info_collect.Bcwd_disp_distrib_from_migration_matrix.resize(Lattice.size());
         for (auto it = info_collect.Bcwd_disp_distrib_from_migration_matrix.begin(); it < info_collect.Bcwd_disp_distrib_from_migration_matrix.end(); ++it)
         {
-            it->resize((Lat_size[0] + 1) * (Lat_size[1] + 1)); // TDODO ? remplacer (Lat_size[0] + 1) * (Lat_size[1] + 1) par Lattice.size() ?
+            it->resize(Lattice.size());
         }
     }
 
     //Calc of backward
     int num_focal_node = 0;
-    for (int x_node = 0; x_node <= Lat_size[0]; ++x_node)
+    for (int x_node = 0; x_node < Lat_size[0]; ++x_node)
     {
-        for (int y_node = 0; y_node <= Lat_size[1]; ++y_node)
+        for (int y_node = 0; y_node < Lat_size[1]; ++y_node)
         {
             node_lattice_c *node = this->node({x_node, y_node});
             node->Bcwd_distrib.Cumul_bcwd_distrib.reserve(Lattice.size());
@@ -559,9 +560,9 @@ void lattice_c::compute_bcwd_disp_distrib(std::vector<std::vector<double>> const
             int num_migr_node = 0;
             double Immigrant_nbr_sum = 0;
             double Immigrant_nbr;
-            for (int x = 0; x <= Lat_size[0]; ++x)
+            for (int x = 0; x < Lat_size[0]; ++x)
             {
-                for (int y = 0; y <= Lat_size[1]; ++y)
+                for (int y = 0; y < Lat_size[1]; ++y)
                 {
                     Immigrant_nbr = this->node({x, y})->Subpop_size * mig_prob_matx[num_migr_node][num_focal_node];
                     distrib.emplace_back(this->node({x, y}), Immigrant_nbr); // TODO : à vérifier avec Tim, c'était mig_prob_matx[num_focal_node][num_migr_node]);
@@ -605,7 +606,7 @@ void lattice_c::compute_bcwd_disp_distrib(std::vector<std::vector<double>> const
 // the lattice is build/explored in columns bottom up
 int lattice_c::hash(std::array<int, 2> const &coord)
 {
-    return coord[0] * (Lat_size[1] + 1) + coord[1];
+    return coord[0] * Lat_size[1] + coord[1];
 }
 
 //Add indiv_c by coord
@@ -627,15 +628,15 @@ node_lattice_c *lattice_c::node(std::array<int, 2> const &coord)
 extend_lattice_c::extend_lattice_c(lattice_c &lat) : Lat(lat)
 {
     //Map all the "real" coord for each poosible coord. Coord in the lattice stay the same bu coord out will be translate (depend on apply_edge_effect)
-    Remap_extend_lattice = std::vector<std::vector<std::array<int, 2>>>(Lat.Lat_size[0] + (Lat.Disp_dist_max[0] * 2) + 1, std::vector<std::array<int, 2>>(Lat.Lat_size[1] + (Lat.Disp_dist_max[1] * 2) + 1, std::array<int, 2>()));
+    Remap_extend_lattice = std::vector<std::vector<std::array<int, 2>>>(Lat.Lat_size[0] + (Lat.Disp_dist_max[0] * 2), std::vector<std::array<int, 2>>(Lat.Lat_size[1] + (Lat.Disp_dist_max[1] * 2), std::array<int, 2>()));
 
     std::array<int, 2> real_values{-1, -1};
 
-    for (int x = 0; x <= Lat.Lat_size[0] + (Lat.Disp_dist_max[0] * 2); ++x)
+    for (int x = 0; x < Lat.Lat_size[0] + (Lat.Disp_dist_max[0] * 2); ++x)
     {
         real_values[0] = x - Lat.Disp_dist_max[0];
 
-        for (int y = 0; y <= Lat.Lat_size[1] + (Lat.Disp_dist_max[1] * 2); ++y)
+        for (int y = 0; y < Lat.Lat_size[1] + (Lat.Disp_dist_max[1] * 2); ++y)
         {
             real_values[1] = y - Lat.Disp_dist_max[1];
 
@@ -646,7 +647,7 @@ extend_lattice_c::extend_lattice_c(lattice_c &lat) : Lat(lat)
                 {
                 case edge_effect_enum::reflecting:
                 {
-                    while ((real_values.at(dim) < 0) || (real_values.at(dim) > Lat.Lat_size.at(dim)))
+                    while ((real_values.at(dim) < 0) || (real_values.at(dim) >= Lat.Lat_size.at(dim)))
                     {
                         if (real_values.at(dim) < 0)
                         {
@@ -654,7 +655,7 @@ extend_lattice_c::extend_lattice_c(lattice_c &lat) : Lat(lat)
                         }
                         else
                         { // Lat_size.at(dim) - ((real_values.at(dim) - Lat_size.at(dim))
-                            real_values.at(dim) = 2 * Lat.Lat_size.at(dim) - real_values.at(dim);
+                            real_values.at(dim) = 2 * (Lat.Lat_size.at(dim) - 1) - real_values.at(dim);
                         }
                     }
                     break;
@@ -662,15 +663,15 @@ extend_lattice_c::extend_lattice_c(lattice_c &lat) : Lat(lat)
 
                 case edge_effect_enum::circular:
                 {
-                    while ((real_values.at(dim) < 0) || (real_values.at(dim) > Lat.Lat_size.at(dim)))
+                    while ((real_values.at(dim) < 0) || (real_values.at(dim) >= Lat.Lat_size.at(dim)))
                     {
                         if (real_values.at(dim) < 0)
                         {
-                            real_values.at(dim) = Lat.Lat_size.at(dim) + real_values.at(dim) + 1;
+                            real_values.at(dim) = (Lat.Lat_size.at(dim) - 1) + real_values.at(dim) + 1;
                         }
                         else
                         {
-                            real_values.at(dim) = -Lat.Lat_size.at(dim) + real_values.at(dim) - 1;
+                            real_values.at(dim) = -(Lat.Lat_size.at(dim) - 1) + real_values.at(dim) - 1;
                         }
                     }
                     break;
@@ -678,7 +679,7 @@ extend_lattice_c::extend_lattice_c(lattice_c &lat) : Lat(lat)
                 //Need to have a value in the lattice (for Neig_migr_nbr)
                 case edge_effect_enum::absorbing:
                 {
-                    if ((real_values.at(dim) < 0) || (real_values.at(dim) > Lat.Lat_size.at(0)))
+                    if ((real_values.at(dim) < 0) || (real_values.at(dim) >= Lat.Lat_size.at(0)))
                     {
                         real_values.at(dim) = -1;
                     }
@@ -689,7 +690,7 @@ extend_lattice_c::extend_lattice_c(lattice_c &lat) : Lat(lat)
             Remap_extend_lattice[x][y] = real_values;
         }
     }
-    Neig_migr_nbr = std::vector<std::vector<double>>(Lat.Lat_size[0] + 1, std::vector<double>(Lat.Lat_size[1] + 1, 0));
+    Neig_migr_nbr = std::vector<std::vector<double>>(Lat.Lat_size[0], std::vector<double>(Lat.Lat_size[1], 0));
 }
 
 //Acces to "map"
@@ -760,11 +761,11 @@ std::vector<std::tuple<node_lattice_c *, double>> extend_lattice_c::compute_migr
         //if absorbing effect then need to consdier only nodes inside the lattice
         for (int ext_lat_x = coord_focal_node[0] - Lat.Disp_dist_max[0]; ext_lat_x <= coord_focal_node[0] + Lat.Disp_dist_max[0]; ++ext_lat_x)
         {
-            if ((ext_lat_x >= 0) && (ext_lat_x <= Lat.Lat_size[0]))
+            if ((ext_lat_x >= 0) && (ext_lat_x < Lat.Lat_size[0]))
             {
                 for (int ext_lat_y = coord_focal_node[1] - Lat.Disp_dist_max[1]; ext_lat_y <= coord_focal_node[1] + Lat.Disp_dist_max[1]; ++ext_lat_y)
                 {
-                    if ((ext_lat_y >= 0) && (ext_lat_y <= Lat.Lat_size[1]))
+                    if ((ext_lat_y >= 0) && (ext_lat_y < Lat.Lat_size[1]))
                     {
                         auto node_ptr = Lat.node({ext_lat_x, ext_lat_y});
                         fwd_disp_distrib_c *node_fwd_distrib = &(node_ptr->Fwd_distrib);
@@ -841,11 +842,11 @@ std::vector<std::tuple<node_lattice_c *, double>> extend_lattice_c::compute_migr
     {
         for (int ext_lat_x = coord_focal_node[0] - Lat.Disp_dist_max[0]; ext_lat_x <= coord_focal_node[0] + Lat.Disp_dist_max[0]; ++ext_lat_x)
         {
-            if ((ext_lat_x >= 0) && (ext_lat_x <= Lat.Lat_size[0]))
+            if ((ext_lat_x >= 0) && (ext_lat_x < Lat.Lat_size[0]))
             {
                 for (int ext_lat_y = coord_focal_node[1] - Lat.Disp_dist_max[1]; ext_lat_y <= coord_focal_node[1] + Lat.Disp_dist_max[1]; ++ext_lat_y)
                 {
-                    if ((ext_lat_y >= 0) && (ext_lat_y <= Lat.Lat_size[1]))
+                    if ((ext_lat_y >= 0) && (ext_lat_y < Lat.Lat_size[1]))
                     {
                         auto node_ptr = Lat.node({ext_lat_x, ext_lat_y});
                         //flattening freq neig node
@@ -932,7 +933,7 @@ void homogene_migration(lattice_c &lat, extend_lattice_c *rmap, indiv_stock_c &i
         auto const &demo_param = singleton_c<demo_param_c>::instance();
         if (info_collect.Effective_disp)
         {
-            for (size_t dim = 0; dim < (!(lat.Lat_size[1]) ? 1 : 2); ++dim)
+            for (size_t dim = 0; dim < (!(lat.Lat_size[1] - 1) ? 1 : 2); ++dim)
             {
                 if (dist[dim] == 0)
                 {
@@ -970,7 +971,7 @@ node_lattice_c *apply_movment(lattice_c &lat, extend_lattice_c &rmap, indiv_c co
     { // redraw for the absorbing case
         for (int dim = 0; dim < 2; ++dim)
         {
-            while ((new_coord.at(dim) < 0) || (new_coord.at(dim) > lat.Lat_size.at(dim)))
+            while ((new_coord.at(dim) < 0) || (new_coord.at(dim) >= lat.Lat_size.at(dim)))
             {
                 new_coord.at(dim) = coord.at(dim) + lat.Cumul_fwd_distrib.draw_value(dim);
             }
@@ -999,7 +1000,7 @@ void heterogene_migration(lattice_c &lat, extend_lattice_c *rmap, indiv_stock_c 
         {
             std::array<int, 2> from_coord = indiv->Node_lat->Coord, to_coord = destination_node->Coord;
 
-            for (size_t dim = 0; dim <= static_cast<size_t>(lat.Lat_size[1]); ++dim)
+            for (size_t dim = 0; dim < static_cast<size_t>(lat.Lat_size[1]); ++dim)
             {
                 int dist = from_coord[dim] - to_coord[dim];
                 if (dist == 0)

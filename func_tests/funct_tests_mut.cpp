@@ -6,7 +6,7 @@
 
 /*********IAM**********/
 
-TEST_CASE("Hudson__IAM__Wright_Fisher_model__1_pop__2_theta__1_site__4000000_rep__1/10000_precision")
+TEST_CASE("Hudson__IAM__Wright_Fisher_model__1_pop__2_theta__1_site__6000000_rep__1/10000_precision")
 {
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
     auto &simu_param = singleton_c<simu_param_c>::instance();
@@ -18,12 +18,12 @@ TEST_CASE("Hudson__IAM__Wright_Fisher_model__1_pop__2_theta__1_site__4000000_rep
 
     rand_gen.put_seed(3);
     // 7500000
-    simu_param.Repetition_nbr = 4000000;
+    simu_param.Repetition_nbr = 6000000;
     simu_param.Continuous_time_approxim = true;
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -34,9 +34,9 @@ TEST_CASE("Hudson__IAM__Wright_Fisher_model__1_pop__2_theta__1_site__4000000_rep
     demo_param.Population_size_N = 50000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -89,7 +89,7 @@ TEST_CASE("Hudson__IAM__Wright_Fisher_model__1_pop__2_theta__10_indepsite__40000
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -100,9 +100,9 @@ TEST_CASE("Hudson__IAM__Wright_Fisher_model__1_pop__2_theta__10_indepsite__40000
     demo_param.Population_size_N = 50000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -156,7 +156,7 @@ TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_p
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -167,9 +167,9 @@ TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_p
     demo_param.Population_size_N = 5000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -205,7 +205,7 @@ TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_p
     REQUIRE(Q0 > m_Q0_seq - 1.96 * (std::sqrt(v_Q0_seq / simu_param.Repetition_nbr)));
 }
 
-TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_pop__0.0001_mut_rate__10_indepsite__30000_rep__1/10000_precision")
+TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_pop__0.0001_mut_rate__10_indepsite__80000_rep__1/10000_precision")
 {
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
     auto &simu_param = singleton_c<simu_param_c>::instance();
@@ -217,12 +217,12 @@ TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_p
 
     rand_gen.put_seed(3);
 
-    simu_param.Repetition_nbr = 30000;
+    simu_param.Repetition_nbr = 80000;
     simu_param.Continuous_time_approxim = false;
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -233,9 +233,9 @@ TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_p
     demo_param.Population_size_N = 5000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -274,7 +274,7 @@ TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_p
 
 /*********KAM**********/
 
-TEST_CASE("Hudson__KAM_1_5__Wright_Fisher_model__1_pop__2_theta__1_site__1500000_rep__1/10000_precision")
+TEST_CASE("Hudson__KAM_1_5__Wright_Fisher_model__1_pop__2_theta__1_site__2000000_rep__1/10000_precision")
 {
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
     auto &simu_param = singleton_c<simu_param_c>::instance();
@@ -286,12 +286,12 @@ TEST_CASE("Hudson__KAM_1_5__Wright_Fisher_model__1_pop__2_theta__1_site__1500000
 
     rand_gen.put_seed(3);
 
-    simu_param.Repetition_nbr = 1500000;
+    simu_param.Repetition_nbr = 2000000;
     simu_param.Continuous_time_approxim = true;
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -302,9 +302,9 @@ TEST_CASE("Hudson__KAM_1_5__Wright_Fisher_model__1_pop__2_theta__1_site__1500000
     demo_param.Population_size_N = 50000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -369,7 +369,7 @@ TEST_CASE("Hudson__KAM_1_5__Wright_Fisher_model__1_pop__2_theta__10_indepsite__6
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -380,9 +380,9 @@ TEST_CASE("Hudson__KAM_1_5__Wright_Fisher_model__1_pop__2_theta__10_indepsite__6
     demo_param.Population_size_N = 50000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -448,7 +448,7 @@ TEST_CASE("Gen_per_gen__KAM_1_5__Wright_Fisher_model__1_pop__5000_diplo_indivs_p
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -459,9 +459,9 @@ TEST_CASE("Gen_per_gen__KAM_1_5__Wright_Fisher_model__1_pop__5000_diplo_indivs_p
     demo_param.Population_size_N = 5000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -523,7 +523,7 @@ TEST_CASE("Gen_per_gen__KAM_1_5__Wright_Fisher_model__1_pop__5000_diplo_indivs_p
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -534,9 +534,9 @@ TEST_CASE("Gen_per_gen__KAM_1_5__Wright_Fisher_model__1_pop__5000_diplo_indivs_p
     demo_param.Population_size_N = 5000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -601,7 +601,7 @@ TEST_CASE("Hudson__SMM_1_10__Wright_Fisher_model__1_pop__2_theta__1_site__150000
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -612,9 +612,9 @@ TEST_CASE("Hudson__SMM_1_10__Wright_Fisher_model__1_pop__2_theta__1_site__150000
     demo_param.Population_size_N = 50000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -679,7 +679,7 @@ TEST_CASE("Hudson__SMM_1_10000__Wright_Fisher_model__1_pop__2_theta__1_site__300
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -690,9 +690,9 @@ TEST_CASE("Hudson__SMM_1_10000__Wright_Fisher_model__1_pop__2_theta__1_site__300
     demo_param.Population_size_N = 50000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -730,7 +730,7 @@ TEST_CASE("Hudson__SMM_1_10000__Wright_Fisher_model__1_pop__2_theta__1_site__300
     REQUIRE(Q0 > m_Q0_seq - 1.96 * (std::sqrt(v_Q0_seq / simu_param.Repetition_nbr)));
 }
 
-TEST_CASE("Gen_per_gen__SMM_1_10__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_pop__0.0001_mut_rate__1_site__1000000_rep__1/10000_precision")
+TEST_CASE("Gen_per_gen__SMM_1_10__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_pop__0.0001_mut_rate__1_site__2000000_rep__1/10000_precision")
 {
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
     auto &simu_param = singleton_c<simu_param_c>::instance();
@@ -742,12 +742,12 @@ TEST_CASE("Gen_per_gen__SMM_1_10__Wright_Fisher_model__1_pop__5000_diplo_indivs_
 
     rand_gen.put_seed(3);
 
-    simu_param.Repetition_nbr = 1000000;
+    simu_param.Repetition_nbr = 2000000;
     simu_param.Continuous_time_approxim = false;
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -758,9 +758,9 @@ TEST_CASE("Gen_per_gen__SMM_1_10__Wright_Fisher_model__1_pop__5000_diplo_indivs_
     demo_param.Population_size_N = 5000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -824,7 +824,7 @@ TEST_CASE("Hudson__GSM_1_10__Wright_Fisher_model__1_pop__2_theta__1_site__100000
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -835,9 +835,9 @@ TEST_CASE("Hudson__GSM_1_10__Wright_Fisher_model__1_pop__2_theta__1_site__100000
     demo_param.Population_size_N = 50000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -904,7 +904,7 @@ TEST_CASE("Hudson__GSM_1_10000__Wright_Fisher_model__1_pop__2_theta__1_site__100
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -915,9 +915,9 @@ TEST_CASE("Hudson__GSM_1_10000__Wright_Fisher_model__1_pop__2_theta__1_site__100
     demo_param.Population_size_N = 5000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -957,7 +957,7 @@ TEST_CASE("Hudson__GSM_1_10000__Wright_Fisher_model__1_pop__2_theta__1_site__100
     REQUIRE(Q0 > m_Q0_seq - 1.96 * (std::sqrt(v_Q0_seq / simu_param.Repetition_nbr)));
 }
 
-TEST_CASE("Gen_per_gen__GSM_1_10__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_pop__0.0001_mut_rate__1_site__750000_rep__1/10000_precision")
+TEST_CASE("Gen_per_gen__GSM_1_10__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_pop__0.0001_mut_rate__1_site__1000000_rep__1/10000_precision")
 {
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
     auto &simu_param = singleton_c<simu_param_c>::instance();
@@ -969,12 +969,12 @@ TEST_CASE("Gen_per_gen__GSM_1_10__Wright_Fisher_model__1_pop__5000_diplo_indivs_
 
     rand_gen.put_seed(3);
 
-    simu_param.Repetition_nbr = 750000;
+    simu_param.Repetition_nbr = 1000000;
     simu_param.Continuous_time_approxim = false;
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -985,9 +985,9 @@ TEST_CASE("Gen_per_gen__GSM_1_10__Wright_Fisher_model__1_pop__5000_diplo_indivs_
     demo_param.Population_size_N = 5000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -1055,7 +1055,7 @@ TEST_CASE("Hudson__JCM__Wright_Fisher_model__1_pop__2_theta__1_site__3000000_rep
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -1066,9 +1066,9 @@ TEST_CASE("Hudson__JCM__Wright_Fisher_model__1_pop__2_theta__1_site__3000000_rep
     demo_param.Population_size_N = 50000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -1123,7 +1123,7 @@ TEST_CASE("Hudson__JCM__Wright_Fisher_model__1_pop__2_theta__100_indepsite__6500
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -1134,9 +1134,9 @@ TEST_CASE("Hudson__JCM__Wright_Fisher_model__1_pop__2_theta__100_indepsite__6500
     demo_param.Population_size_N = 50000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -1201,7 +1201,7 @@ TEST_CASE("Gen_per_gen__JCM__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_p
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -1212,9 +1212,9 @@ TEST_CASE("Gen_per_gen__JCM__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_p
     demo_param.Population_size_N = 5000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -1269,7 +1269,7 @@ TEST_CASE("Gen_per_gen__JCM__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_p
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -1280,9 +1280,9 @@ TEST_CASE("Gen_per_gen__JCM__Wright_Fisher_model__1_pop__5000_diplo_indivs_per_p
     demo_param.Population_size_N = 5000;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());

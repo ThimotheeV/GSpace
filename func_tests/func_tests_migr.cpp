@@ -23,7 +23,7 @@ TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__20_haplo_indivs_per_pop
     info_collect.Prob_id_1_loc_Qr = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -34,9 +34,9 @@ TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__20_haplo_indivs_per_pop
     samp_param.n_total_sample_size = 10;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -69,7 +69,7 @@ TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__20_haplo_indivs_per_pop
     REQUIRE(Q0 > m_Q0_seq - 1.96 * (std::sqrt(v_Q0_seq / simu_param.Repetition_nbr)));
 }
 
-TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__10_diplo_indivs_per_pop__0_05_mut_rate__1_site__1500000_rep__1/10000_precision")
+TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__10_diplo_indivs_per_pop__0_05_mut_rate__1_site__2000000_rep__1/10000_precision")
 {
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
     auto &simu_param = singleton_c<simu_param_c>::instance();
@@ -81,13 +81,13 @@ TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__10_diplo_indivs_per_pop
 
     rand_gen.put_seed(3);
 
-    simu_param.Repetition_nbr = 1500000;
+    simu_param.Repetition_nbr = 2000000;
     simu_param.Continuous_time_approxim = false;
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Proba_migr = 0;
 
@@ -98,9 +98,9 @@ TEST_CASE("Gen_per_gen__IAM__Wright_Fisher_model__1_pop__10_diplo_indivs_per_pop
     samp_param.n_total_sample_size = 5;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -151,7 +151,7 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__2_pop__20_haplo_indivs_per_pop__0_005
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 1};
+    demo_param.Lattice_size = {1, 2};
     demo_param.Disp_dist_max = {0, 1};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -165,9 +165,9 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__2_pop__20_haplo_indivs_per_pop__0_005
     samp_param.n_total_sample_size = 20;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -208,7 +208,7 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__2_pop__20_haplo_indivs_per_pop__0_005
     REQUIRE(Q1 > m_Q1_seq - 1.96 * (std::sqrt(v_Q1_seq / simu_param.Repetition_nbr)));
 }
 
-TEST_CASE("Gen_per_gen__IAM__Island_model__2_pop__10_diplo_indivs_per_pop__0_0051_prob_migration__0_05_mut_rate__1_site__15000000_rep__1/10000_precision")
+TEST_CASE("Gen_per_gen__IAM__Island_model__2_pop__10_diplo_indivs_per_pop__0_0051_prob_migration__0_05_mut_rate__1_site__20000000_rep__1/10000_precision")
 {
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
     auto &simu_param = singleton_c<simu_param_c>::instance();
@@ -220,13 +220,13 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__2_pop__10_diplo_indivs_per_pop__0_005
 
     rand_gen.put_seed(3);
 
-    simu_param.Repetition_nbr = 15000000;
+    simu_param.Repetition_nbr = 20000000;
     simu_param.Continuous_time_approxim = false;
 
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 1};
+    demo_param.Lattice_size = {1, 2};
     demo_param.Disp_dist_max = {0, 1};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -240,9 +240,9 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__2_pop__10_diplo_indivs_per_pop__0_005
     samp_param.n_total_sample_size = 10;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -318,7 +318,7 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__2_pop__200_haplo_indivs_per_pop__0_00
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 1};
+    demo_param.Lattice_size = {1, 2};
     demo_param.Disp_dist_max = {0, 1};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -332,9 +332,9 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__2_pop__200_haplo_indivs_per_pop__0_00
     samp_param.n_total_sample_size = 20;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -393,7 +393,7 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__2_pop__100_diplo_indivs_per_pop__0_00
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 1};
+    demo_param.Lattice_size = {1, 2};
     demo_param.Disp_dist_max = {0, 1};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -407,9 +407,9 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__2_pop__100_diplo_indivs_per_pop__0_00
     samp_param.n_total_sample_size = 20;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -485,7 +485,7 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__4_pop__20_haplo_indivs_per_pop__0_005
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 3};
+    demo_param.Lattice_size = {1, 4};
     demo_param.Disp_dist_max = {0, 3};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -499,9 +499,9 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__4_pop__20_haplo_indivs_per_pop__0_005
     samp_param.n_total_sample_size = 20;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -542,7 +542,7 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__4_pop__20_haplo_indivs_per_pop__0_005
     REQUIRE(Q1 > m_Q1_seq - 1.96 * (std::sqrt(v_Q1_seq / simu_param.Repetition_nbr)));
 }
 
-TEST_CASE("Gen_per_gen__IAM__Island_model__4_pop__10_diplo_indivs_per_pop__0_0051_prob_migration__0_05_mut_rate__1_site__4000000_rep__1/10000_precision")
+TEST_CASE("Gen_per_gen__IAM__Island_model__4_pop__10_diplo_indivs_per_pop__0_0051_prob_migration__0_05_mut_rate__1_site__20000000_rep__1/10000_precision")
 {
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
     auto &simu_param = singleton_c<simu_param_c>::instance();
@@ -554,13 +554,13 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__4_pop__10_diplo_indivs_per_pop__0_005
 
     rand_gen.put_seed(3);
 
-    simu_param.Repetition_nbr = 4000000;
+    simu_param.Repetition_nbr = 20000000;
     simu_param.Continuous_time_approxim = false;
 
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 3};
+    demo_param.Lattice_size = {1, 4};
     demo_param.Disp_dist_max = {0, 3};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -574,9 +574,9 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__4_pop__10_diplo_indivs_per_pop__0_005
     samp_param.n_total_sample_size = 8;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -662,7 +662,7 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__4_pop__10_diplo_indivs_per_pop__0_005
 //     info_collect.Stats = true;
 //     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-//     demo_param.Lattice_size = {0, 19};
+//     demo_param.Lattice_size = {1, 20};
 //     demo_param.Disp_dist_max = {0, 19};
 //     demo_param.Edge_effects = edge_effect_enum::circular;
 //     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -676,9 +676,9 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__4_pop__10_diplo_indivs_per_pop__0_005
 //     samp_param.n_total_sample_size = 40;
 
 //     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-//     for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+//     for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
 //     {
-//         for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+//         for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
 //         {
 //             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
 //             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -757,7 +757,7 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__4_pop__10_diplo_indivs_per_pop__0_005
 //     info_collect.Stats = true;
 //     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-//     demo_param.Lattice_size = {0, 19};
+//     demo_param.Lattice_size = {1, 20};
 //     demo_param.Disp_dist_max = {0, 19};
 //     demo_param.Edge_effects = edge_effect_enum::circular;
 //     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -771,9 +771,9 @@ TEST_CASE("Gen_per_gen__IAM__Island_model__4_pop__10_diplo_indivs_per_pop__0_005
 //     samp_param.n_total_sample_size = 100;
 
 //     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-//     for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+//     for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
 //     {
-//         for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+//         for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
 //         {
 //             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
 //             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -853,7 +853,7 @@ TEST_CASE("Gen_per_gen__IAM__IBD_stepping_stone__10_pop__2_haplo_indivs_per_pop_
     info_collect.Prob_id_1_loc_Qr = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 9};
+    demo_param.Lattice_size = {1, 10};
     demo_param.Disp_dist_max = {0, 1};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -867,9 +867,9 @@ TEST_CASE("Gen_per_gen__IAM__IBD_stepping_stone__10_pop__2_haplo_indivs_per_pop_
     samp_param.n_total_sample_size = 20;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -942,7 +942,7 @@ TEST_CASE("Gen_per_gen__IAM__IBD_stepping_stone__10_pop__2_haplo_indivs_per_pop_
     REQUIRE(Q5 > m_Q5_seq - 1.96 * (std::sqrt(v_Q5_seq / simu_param.Repetition_nbr)));
 }
 
-TEST_CASE("Gen_per_gen__IAM__IBD_stepping_stone__100_pop__2_haplo_indivs_per_pop__0_6666_prob_migration__0_0005_mut_rate__1_site__350000_rep__1/10000_precision")
+TEST_CASE("Gen_per_gen__IAM__IBD_stepping_stone__100_pop__2_haplo_indivs_per_pop__0_6666_prob_migration__0_0005_mut_rate__1_site__1000000_rep__1/10000_precision")
 {
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
     auto &simu_param = singleton_c<simu_param_c>::instance();
@@ -954,13 +954,13 @@ TEST_CASE("Gen_per_gen__IAM__IBD_stepping_stone__100_pop__2_haplo_indivs_per_pop
 
     rand_gen.put_seed(3);
 
-    simu_param.Repetition_nbr = 350000;
+    simu_param.Repetition_nbr = 1000000;
     simu_param.Continuous_time_approxim = false;
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {9, 9};
+    demo_param.Lattice_size = {10,10};
     demo_param.Disp_dist_max = {1, 1};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -974,9 +974,9 @@ TEST_CASE("Gen_per_gen__IAM__IBD_stepping_stone__100_pop__2_haplo_indivs_per_pop
     samp_param.n_total_sample_size = 200;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -1069,7 +1069,7 @@ TEST_CASE("Gen_per_gen__IAM__IBD_pareto_n_3_79809435_dist_max_49__20_pop__1_hapl
     info_collect.Prob_id_1_loc_Qr = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 9};
+    demo_param.Lattice_size = {1, 10};
     demo_param.Disp_dist_max = {0, 49};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::pareto(3.79809435);
@@ -1083,9 +1083,9 @@ TEST_CASE("Gen_per_gen__IAM__IBD_pareto_n_3_79809435_dist_max_49__20_pop__1_hapl
     samp_param.n_total_sample_size = 20;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -1176,7 +1176,7 @@ TEST_CASE("Gen_per_gen__IAM__IBD_pareto_n_2_74376568017753_dist_max_48__10_pop__
     info_collect.Prob_id_1_loc_Qr = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 9};
+    demo_param.Lattice_size = {1, 10};
     demo_param.Disp_dist_max = {0, 48};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::pareto(2.74376568017753);
@@ -1190,9 +1190,9 @@ TEST_CASE("Gen_per_gen__IAM__IBD_pareto_n_2_74376568017753_dist_max_48__10_pop__
     samp_param.n_total_sample_size = 20;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());

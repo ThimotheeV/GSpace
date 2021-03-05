@@ -81,10 +81,10 @@ std::array<int, 4> cumul_distrib(std::array<double, 4> prob_vec);
 //draws from the ditribution computed above
 int nucl_distri(std::array<int, 4> const &cumul_prob_vec, double random);
 
-// std::vector<std::tuple<childs_node, time_t, gen), nbr_leaf_for_node>>;
-using top_down_tree_t = std::vector<std::tuple<std::vector<int>, double, int, int>>;
-// vector of maps (one sample = one map) map of < site nbr, state >
-using sample_mutated_state_type = std::vector<std::map<int, int>>;
+// std::vector<std::tuple<childs_node, time_t, gen)>>;
+using top_down_tree_t = std::vector<std::tuple<std::vector<int>, double, int>>;
+// vector (one sample = one map) of vector of < site nbr, state >
+using sample_mutated_state_type = std::vector<std::vector<std::pair<const int, const int>>>;
 
 /**************************************************************/
 /*                        Mut mod                             */
@@ -96,7 +96,7 @@ struct mut_mod_c_iam
     mut_mod_c_iam() = default;
     explicit mut_mod_c_iam(int nbr_site);
 
-    void apply_mut(std::map<int, int>::iterator indivs_mut_state_node_site);
+    int apply_mut(int site_index);
 
 private:
     std::vector<int> Count;
@@ -107,7 +107,7 @@ struct mut_mod_c_kam
     mut_mod_c_kam() = default; // equiv to mut_mod_c_kam(); because the default constructor is the empty one
     mut_mod_c_kam(int k_min, int k_max, rand_gen_c *rand_gen);
 
-    void apply_mut(std::map<int, int>::iterator indivs_mut_state_node_site);
+    int apply_mut(int state);
 
     rand_gen_c *Rand_gen{nullptr};
     std::uniform_int_distribution<> Uni_int_kmin_kmax_distrib;
@@ -118,7 +118,7 @@ struct mut_mod_c_smm
     mut_mod_c_smm() = default;
     mut_mod_c_smm(int k_min, int k_max, rand_gen_c *rand_gen);
 
-    void apply_mut(std::map<int, int>::iterator indivs_mut_state_node_site);
+    int apply_mut(int state);
 
     int K_min{1};
     int K_max{1};
@@ -132,7 +132,7 @@ struct mut_mod_c_gsm
 
     mut_mod_c_gsm(int k_min, int k_max, double p_gsm, rand_gen_c *rand_gen);
 
-    void apply_mut(std::map<int, int>::iterator indivs_mut_state_node_site);
+    int apply_mut(int state);
 
     int K_min{1};
     int K_max{1};
@@ -147,7 +147,7 @@ struct mut_mod_c_gsm
 //     mut_mod_c_ism() = default;
 //     explicit mut_mod_c_ism(int number_site);
 
-//     void apply_mut(std::map<int, int>::iterator indivs_mut_state_node_site);
+//     int apply_mut(int state);
 
 //     std::vector<int> Next_indivs_mut_state_t_vector;
 // };
@@ -157,7 +157,7 @@ struct mut_mod_c_jcm
     mut_mod_c_jcm() = default;
     explicit mut_mod_c_jcm(rand_gen_c *rand_gen);
 
-    void apply_mut(std::map<int, int>::iterator indivs_mut_state_node_site);
+    int apply_mut(int state);
 
     rand_gen_c *Rand_gen{nullptr};
     //Nasty but bug proof
@@ -172,7 +172,7 @@ struct mut_mod_c_k80
     mut_mod_c_k80() = default;
     mut_mod_c_k80(std::array<double, 2> ratio_transi_transver, rand_gen_c *rand_gen);
 
-    void apply_mut(std::map<int, int>::iterator indivs_mut_state_node_site);
+    int apply_mut(int state);
 
     rand_gen_c *Rand_gen{nullptr};
 
@@ -187,7 +187,7 @@ struct mut_mod_c_f81
     mut_mod_c_f81() = default;
     mut_mod_c_f81(equi_base_freq_c equi_base_freq, rand_gen_c *rand_gen);
 
-    void apply_mut(std::map<int, int>::iterator indivs_mut_state_node_site);
+    int apply_mut(int state);
 
     rand_gen_c *Rand_gen{nullptr};
 
@@ -202,7 +202,7 @@ struct mut_mod_c_hky
     mut_mod_c_hky() = default;
     mut_mod_c_hky(std::array<double, 2> ratio_transi_transver, equi_base_freq_c equi_base_freq, rand_gen_c *rand_gen);
 
-    void apply_mut(std::map<int, int>::iterator indivs_mut_state_node_site);
+    int apply_mut(int state);
 
     rand_gen_c *Rand_gen{nullptr};
 
@@ -217,7 +217,7 @@ struct mut_mod_c_tn93
     mut_mod_c_tn93() = default;
     mut_mod_c_tn93(std::array<double, 2> ratio_transi_transver, equi_base_freq_c equi_base_freq, rand_gen_c *rand_gen);
 
-    void apply_mut(std::map<int, int>::iterator indivs_mut_state_node_site);
+    int apply_mut(int state);
 
     rand_gen_c *Rand_gen{nullptr};
 
@@ -238,7 +238,7 @@ public:
     //it is implemented in mutation.cpp, and fill mut_model with global variables
     mut_model_c();
 
-    void apply_mut_to_site(mut_model_enum mut_name, std::map<int, int>::iterator indivs_mut_state_node_site);
+    int apply_mut_to_site(mut_model_enum mut_name, int state, int site_index);
 
     //needs to initialize all models for the switch in choose_mod()
     mut_mod_c_iam Mut_mod_iam;
@@ -256,17 +256,20 @@ public:
 
 struct mut_genenerator_c
 {
-    sample_mutated_state_type &mut_generation(top_down_tree_t const &gene_tree, std::vector<int> const &ancestry_seq, std::array<int, 2> const &begin_end_seq_current_tree, int MRCA_index);
+    sample_mutated_state_type &mut_generation(top_down_tree_t const &gene_tree, std::vector<int> const &ancestry_seq, std::array<int, 2> const &begin_end_seq_current_tree, muta_param_c const &muta_param, int MRCA_index, int sample_size);
 
-    void browse_tree(bool approx, top_down_tree_t const &gene_tree, std::vector<int> &child_nodes, std::vector<int> const &ancestry_seq);
-
-    void mut_process(bool approx, top_down_tree_t const &gene_tree, int ancester_index, int node_index, std::vector<int> const &ancestry_seq);
-
-    void mut_events(bool approx, int node_index, double long_branch, double mut_rate, std::vector<int> const &ancestry_seq, rand_gen_c &rand_gen);
-
+    void add_mut(std::vector<int> const &ancester_state, rand_gen_c &seed_gen, int node_index, int nbr_mut);
+    void remove_mut();
+    void harvest_mut(int num_sample);
+    int draw_nbr_mut(muta_param_c const &muta_param, rand_gen_c &rand_gen, std::tuple<std::vector<int>, double, int> const &parent_node, std::tuple<std::vector<int>, double, int> const &child_node, long int nbr_site, bool approx);
     //Membre
     mut_model_c Mut_model;
-    std::array<int, 2> Begin_end_sequence{0, 0};
+    mut_model_enum Mod_mut_name;
+
+    std::uniform_int_distribution<long int> Site_distri;
+    std::map<int, std::list<int>> Mut_chain;
+    std::list<std::list<int>> Mut_register;
+
     sample_mutated_state_type All_indivs_mut_state; // mutated sites and states for each sample, for the current chunk
 };
 

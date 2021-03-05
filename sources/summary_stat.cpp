@@ -221,7 +221,6 @@ std::array<double, 2> calc_cumul_mean_var(std::array<double, 2> cumul_mean_var_p
 
 void coa_tree_metrics_c::calcul_coa_tree_metrics(bool approx, int ploidy, int population_size, int sample_size)
 {
-    //WARNING : In this prog by construction the indiv_c in pop are always diploid
     int gene_population_size;
     if (approx)
     {
@@ -248,4 +247,113 @@ void coa_tree_metrics_c::calcul_coa_tree_metrics(bool approx, int ploidy, int po
 
     Theo_2_lign_coa_time_mean = gene_population_size;
     Theo_2_lign_coa_time_var = (std::pow(2 * gene_population_size, 2) * harmonic_number_of_square_sample_size) - std::pow(2 * gene_population_size * harmonic_number_of_sample_size, 2);
+}
+
+//TSKIT STRUCTURES
+
+void tskit_struct_c::ini_tskit_struct(samp_param_c const &samp_param, muta_param_c const &muta_param, simu_param_c const &simu_param)
+{
+    Tskit_output = simu_param.Tskit_output;
+    Approx_time = simu_param.Continuous_time_approxim;
+
+    Sample_size = samp_param.n_total_sample_size;
+    Sequence_length = samp_param.Sequence_length;
+
+    Ploidy = samp_param.Ploidy;
+
+    Chr_num = 0;
+
+    //Common par for all the chromosome
+    tsk_table_collection_init(&Tables, 0);
+    Tables.sequence_length = samp_param.Sequence_length * samp_param.Chr_nbr;
+
+    //Leaf
+    for (int i = 0; i < Sample_size; ++i)
+    {
+        double temp[2] = {static_cast<double>(samp_param.Sample_coord_vec.at(i).at(0)), static_cast<double>(samp_param.Sample_coord_vec.at(i).at(1))}; 
+        tsk_individual_table_add_row(&(Tables.individuals), 1, temp, 2, NULL, 0, NULL, 0);
+
+        tsk_id_t indiv = Tables.individuals.num_rows - 1;
+        tsk_node_table_add_row(&(Tables.nodes), 1, 0, TSK_NULL, indiv, NULL, 0);
+        if (Ploidy == 2)
+        {
+            tsk_node_table_add_row(&(Tables.nodes), 1, 0, TSK_NULL, indiv, NULL, 0);
+        }
+    }
+
+    //Ancestral sites
+    for (auto const &chr : muta_param.Ancestry_seq)
+    {
+        for (std::size_t pos = 0; pos < chr.size(); ++pos)
+        {
+            std::string temp = std::to_string(chr[pos]);
+            tsk_site_table_add_row(&(Tables.sites), pos, temp.c_str(), temp.size(), NULL, 0);
+        }
+    }
+}
+
+void tskit_struct_c::add_new_chrom(coa_table_c coa_table)
+{
+    coa_table.sort_by_num_u(0);
+    std::map<int, tsk_size_t> index_in_tables_nodes;
+    //coa_event = tuple< left_brkpt_l, int right_brkpt_r, int num_node_u, std::vector<int> childs_node, double T_time, int gen >
+    for (auto &coa_event : coa_table)
+    {
+        //Internal ARG nodes
+        auto emplace = index_in_tables_nodes.emplace(std::get<2>(coa_event), Tables.nodes.num_rows);
+
+        if (emplace.second)
+        {
+            if (Approx_time)
+            {
+                tsk_node_table_add_row(&(Tables.nodes), 0, std::get<4>(coa_event), TSK_NULL, TSK_NULL, NULL, 0);
+            }
+            else
+            {
+                tsk_node_table_add_row(&(Tables.nodes), 0, static_cast<double>(std::get<5>(coa_event)), TSK_NULL, TSK_NULL, NULL, 0);
+            }
+        }
+
+        for (int childs : std::get<3>(coa_event))
+        {
+            if (childs >= Sample_size * Ploidy)
+            {
+                childs = index_in_tables_nodes[childs];
+            }
+
+            tsk_edge_table_add_row(&(Tables.edges), static_cast<double>(std::get<0>(coa_event) + Chr_num * Sequence_length), static_cast<double>(std::get<1>(coa_event) + Chr_num * Sequence_length), index_in_tables_nodes[std::get<2>(coa_event)], static_cast<tsk_id_t>(childs), NULL, 0);
+        }
+    }
+
+    Index_in_tables_nodes = index_in_tables_nodes;
+}
+
+void tskit_struct_c::add_new_mut(int site_num, int index_node, std::string state)
+{
+    tsk_id_t site = site_num + Chr_num * Sequence_length;
+    tsk_id_t tsk_node = Index_in_tables_nodes[index_node];
+
+    Tsk_parent_mut.emplace(site, -1);
+
+    tsk_mutation_table_add_row(&(Tables.mutations), site, tsk_node, Tsk_parent_mut.at(site), TSK_UNKNOWN_TIME, state.c_str(), state.size(), NULL, 0);
+
+    Tsk_parent_mut.at(site) = static_cast<tsk_id_t>(Tables.mutations.num_rows) - 1;
+}
+
+void tskit_struct_c::sort_and_output(std::string const &path_to_file)
+{
+    int ret = tsk_table_collection_sort(&Tables, NULL, 0);
+    if (ret != 0)
+    {
+        std::cerr << "Tskit output sort error : " << tsk_strerror(ret) << std::endl;
+        exit(1);
+    }
+
+    // Write out the tree sequence
+    ret = tsk_table_collection_dump(&Tables, path_to_file.c_str(), 0);
+    if (ret != 0)
+    {
+        std::cerr << "Tskit output error : " << tsk_strerror(ret) << std::endl;
+        exit(1);
+    }
 }

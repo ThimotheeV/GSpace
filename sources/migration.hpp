@@ -185,7 +185,7 @@ struct lattice_c
     node_lattice_c *node(std::array<int, 2> const &coord);
 
     bool Homogeneous{true}; // reserve the mem zone and put true during declaration (i.e. before construction)
-    std::array<int, 2> Lat_size{0, 0};
+    std::array<int, 2> Lat_size{1, 1};
     std::array<int, 2> Disp_dist_max{0, 0}; // max of max_dists if heterogeneous dispersal
 
     std::vector<node_lattice_c> Lattice;

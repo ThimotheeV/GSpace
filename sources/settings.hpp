@@ -84,6 +84,7 @@ struct simu_param_c
     bool Fasta_single_line_seq = false;
     bool Phylip_output = false;
     bool Coordinates_output = false;
+    bool Tskit_output = false;
     bool Seq_char_output = false;
     bool Nodesize_matrix = false;
     bool Migration_matrix = false;

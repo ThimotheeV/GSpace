@@ -14,7 +14,14 @@ void sample_simulator(output_stat_c &output_stat, int rep)
     auto const &recomb_param = singleton_c<recomb_param_c>::instance();
     auto const &muta_param = singleton_c<muta_param_c>::instance();
     auto &info_collect = singleton_c<info_collector_c>::instance();
+    auto &tskit = singleton_c<tskit_struct_c>::instance();
 
+    std::chrono::time_point<std::chrono::high_resolution_clock> debut;
+    if (info_collect.Clock)
+    {
+        debut = std::chrono::high_resolution_clock::now();
+    }
+    
     info_collect.rep = rep;
 
     std::vector<coa_table_c> coa_table_vec(samp_param.Chr_nbr);
@@ -43,12 +50,6 @@ void sample_simulator(output_stat_c &output_stat, int rep)
         lat = new lattice_c(rand_gen, fwd_distrib, demo_param);
     }
     extend_lattice_c rmap(*lat);
-
-    std::chrono::time_point<std::chrono::high_resolution_clock> debut;
-    if (info_collect.Clock)
-    {
-        debut = std::chrono::high_resolution_clock::now();
-    }
 
     //TODO faire une foncytion d'intialisation de effective disp.
     if (info_collect.Effective_disp)
@@ -112,19 +113,29 @@ void sample_simulator(output_stat_c &output_stat, int rep)
         throw std::logic_error("( Something went horribly wrong in this run. Safety first : disinfect your computer with holy water then contact the IT slave who is responsible for this pile of code... I exit. )");
     }
 
+    // if (info_collect.Debug_m)
+    // {
+    //     info_collect.Debug_mut.resize(samp_param.Sequence_length);
+    // }
+
     if ((muta_param.Unscaled_mut_rate_mu != 0) || (muta_param.Scaled_mut_rate_theta != 0))
     {
         //chr, indiv, mut{pos, state}
         std::vector<std::vector<std::vector<std::pair<int, int>>>> sample_mutated_state_chr;
         sample_mutated_state_chr.reserve(samp_param.Chr_nbr);
-        if (info_collect.Coa_times)
+        if (info_collect.MRCA_record)
         {
             info_collect.MRCA_time.clear();
         }
 
         for (int chr = 0; chr < samp_param.Chr_nbr; ++chr)
         {
+            if (tskit.Tskit_output)
+            {
+                tskit.add_new_chrom(coa_table_vec.at(chr));
+            }
             sample_mutated_state_chr.push_back(apply_mut_to_sample(coa_table_vec.at(chr), next_max_node_nbr_vec.at(chr), muta_param.Ancestry_seq.at(chr), muta_param, samp_param, demo_param));
+            ++tskit.Chr_num;
         }
 
         if (info_collect.Stats)
@@ -193,7 +204,7 @@ void sample_simulator(output_stat_c &output_stat, int rep)
                         throw std::logic_error("( During computation of empirical dispersal distribution, GSpace found that the sum of distribution terms is not 1.0 but " + std::to_string(check_sum) + "\nContact the developpers. I exit. )");
                     }
                     info_collect.Kurt_emp_axial_disp[dim] = info_collect.Kurt_emp_axial_disp[dim] / (info_collect.Sig_emp_axial_disp[dim] * info_collect.Sig_emp_axial_disp[dim]) - 3.0;
-                    info_collect.Skew_emp_axial_disp[dim] = info_collect.Skew_emp_axial_disp[dim] / pow(info_collect.Sig_emp_axial_disp[dim],double(3/2));
+                    info_collect.Skew_emp_axial_disp[dim] = info_collect.Skew_emp_axial_disp[dim] / pow(info_collect.Sig_emp_axial_disp[dim], double(3 / 2));
 
                     ++dim;
                 }
@@ -204,12 +215,10 @@ void sample_simulator(output_stat_c &output_stat, int rep)
             }
 
             //Calcul MRCA_time and 2_Gen_coa_time
-            if (info_collect.Coa_times)
+            if (info_collect.MRCA_record)
             {
-                info_collect.MRCA_times_cumul_mean_var = calc_cumul_mean_var(info_collect.MRCA_times_cumul_mean_var, info_collect.MRCA_time, rep);
+                info_collect.MRCA_record_cumul_mean_var = calc_cumul_mean_var(info_collect.MRCA_record_cumul_mean_var, info_collect.MRCA_time, rep);
                 info_collect.MRCA_time.clear();
-                info_collect.Gen_coa_cumul_mean_var = calc_cumul_mean_var(info_collect.Gen_coa_cumul_mean_var, info_collect.Gen_coa_time, rep);
-                info_collect.Gen_coa_time.clear();
             }
         }
         if (simu_param.Genepop_output)
@@ -253,6 +262,12 @@ void sample_simulator(output_stat_c &output_stat, int rep)
             auto coord_filename = simu_param.Generic_data_filename;
             coord_filename += "_coord_" + std::to_string(rep + 1) + ".txt";
             coord_output(coord_filename, samp_param.Sample_coord_vec);
+        }
+        if (simu_param.Tskit_output)
+        {
+            auto coord_filename = simu_param.Generic_data_filename;
+            coord_filename += "_tskit_" + std::to_string(rep + 1) + ".tree";
+            tskit.sort_and_output(coord_filename);
         }
     }
 }
@@ -400,7 +415,7 @@ std::vector<int> ARG_simulator_gen_by_gen(lattice_c &lat, extend_lattice_c &rmap
             debut = std::chrono::high_resolution_clock::now();
         }
 
-        // std::cout << gen << std::endl;
+        //std::cout << indiv_vec.size() << std::endl;
 
         /***************************************************/
         /*                   Migration                     */
@@ -484,8 +499,18 @@ std::vector<int> ARG_simulator_gen_by_gen(lattice_c &lat, extend_lattice_c &rmap
 void recomb_gen_by_gen(struct_arg_c &struct_gen_by_gen, double unscaled_recomb_rate, int chr_index, rand_gen_c &rand_gen)
 {
     //L_cumul_nbr_brkpt_per_seg = Fenwick tree
-    std::binomial_distribution<long int> bino_distri(struct_gen_by_gen.L_cumul_nbr_brkpt_per_seg.get_tot_cumul_freq(), unscaled_recomb_rate);
-    int nbr_recomb_event = bino_distri(rand_gen.Seed_gen);
+    long int cumul_size = struct_gen_by_gen.L_cumul_nbr_brkpt_per_seg.get_tot_cumul_freq();
+    int nbr_recomb_event;
+    if (cumul_size > 10000)
+    {
+        std::poisson_distribution<long int> distri(cumul_size * unscaled_recomb_rate);
+        nbr_recomb_event = distri(rand_gen.Seed_gen);
+    }
+    else
+    {
+        std::binomial_distribution<int> distri(cumul_size, unscaled_recomb_rate);
+        nbr_recomb_event = distri(rand_gen.Seed_gen);
+    }
 
     //For each recomb event we draw a new brkpt
     while ((nbr_recomb_event > 0) && (struct_gen_by_gen.L_cumul_nbr_brkpt_per_seg.get_tot_cumul_freq() != 0))
@@ -601,14 +626,12 @@ std::array<seg *, 2> apply_first_recomb(obj_mem_manag_c<seg> &pool_seg, fenwick_
 
 void coa_gen_by_gen(indiv_stock_c &indiv_vec, std::vector<struct_arg_c> &struct_gen_by_gen_vec, lattice_c &lat, std::vector<coa_table_c> &coa_table_vec, int gen, samp_param_c const &samp_param, rand_gen_c &rand_gen)
 {
-    std::vector<int> coa_table_size;
-    coa_table_size.reserve(coa_table_vec.size());
-    //to know if some multicoa arise
-    for (auto &coa_table : coa_table_vec)
+    std::vector<std::size_t> coa_table_size(coa_table_vec.size());
+    //to know where multicoa arise
+    for (std::size_t chr = 0; chr < coa_table_vec.size(); ++chr)
     {
-        coa_table_size.push_back(coa_table.size());
+        coa_table_size.at(chr) = coa_table_vec.at(chr).size();
     }
-
     //Using lattice with lineage for visit only lattice node with potential coalescence event
     for (auto &node_lat : lat.Nodes_with_lineage)
     {
@@ -649,16 +672,15 @@ void coa_gen_by_gen(indiv_stock_c &indiv_vec, std::vector<struct_arg_c> &struct_
                         cell_lig1 = ditrib_and_coa_lign_btw_2_chr(coa_table_vec, indiv_vec, struct_gen_by_gen_vec, gen, cell_lig1, cell_lig2);
                     }
                 }
-                // std::cout<<"Temps coa "<< gen << std::endl;
             }
         }
     }
-
-    for (std::size_t table_index = 0; table_index < coa_table_vec.size(); ++table_index)
+    //Search for multi_coalescence
+    for (std::size_t chr = 0; chr < coa_table_vec.size(); ++chr)
     {
-        if (coa_table_vec.at(table_index).size() > static_cast<std::size_t>(coa_table_size.at(table_index) + 1))
+        if (coa_table_size.at(chr) != coa_table_vec.at(chr).size())
         {
-            coa_table_vec.at(table_index).group_multi_coa(coa_table_size.at(table_index));
+            coa_table_vec.at(chr).group_multi_coa(coa_table_size.at(chr));
         }
     }
 }
@@ -673,8 +695,6 @@ indiv_c *ditrib_and_coa_lign_btw_1_chr(std::vector<coa_table_c> &coa_table_vec, 
     }
 
     seg *new_seg;
-    auto &info_collect = singleton_c<info_collector_c>::instance();
-    auto const &simu_param = singleton_c<simu_param_c>::instance();
 
     bool empty_indiv = true;
 
@@ -689,13 +709,6 @@ indiv_c *ditrib_and_coa_lign_btw_1_chr(std::vector<coa_table_c> &coa_table_vec, 
         auto &struct_arg = struct_arg_vec.at(chr_index);
         //Cell1 and cell2 coa
         new_seg = apply_coa_two_lineage(coa_table_vec.at(chr_index), struct_arg.Pool_seg, struct_arg.L_cumul_nbr_brkpt_per_seg, struct_arg.S_intersection_count, struct_arg.W_next_node_nbr, struct_arg.T_time, gen, two_lign.at(0), two_lign.at(1));
-        if (info_collect.Coa_times)
-        {
-            if ((info_collect.Coa_times) && (!simu_param.Continuous_time_approxim))
-            {
-                info_collect.Nbr_coa.at(gen) += 1;
-            }
-        }
 
         //Do nothing because reach a local mrca
         if (new_seg != nullptr)
@@ -730,8 +743,6 @@ indiv_c *ditrib_and_coa_lign_btw_2_chr(std::vector<coa_table_c> &coa_table_vec, 
 
     seg *new_seg1, *new_seg2;
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
-    auto &info_collect = singleton_c<info_collector_c>::instance();
-    auto const &simu_param = singleton_c<simu_param_c>::instance();
 
     bool empty_indiv = true;
 
@@ -750,11 +761,6 @@ indiv_c *ditrib_and_coa_lign_btw_2_chr(std::vector<coa_table_c> &coa_table_vec, 
         if (four_lign[1] != nullptr)
         {
             new_seg1 = apply_coa_two_lineage(coa_table_vec.at(chr_index), struct_arg.Pool_seg, struct_arg.L_cumul_nbr_brkpt_per_seg, struct_arg.S_intersection_count, struct_arg.W_next_node_nbr, struct_arg.T_time, gen, four_lign[0], four_lign[1]);
-
-            if ((info_collect.Coa_times) && (!simu_param.Continuous_time_approxim))
-            {
-                info_collect.Nbr_coa.at(gen) += 1;
-            }
         }
         else
         {
@@ -765,11 +771,6 @@ indiv_c *ditrib_and_coa_lign_btw_2_chr(std::vector<coa_table_c> &coa_table_vec, 
         if ((four_lign[2] != nullptr) && (four_lign[3] != nullptr))
         {
             new_seg2 = apply_coa_two_lineage(coa_table_vec.at(chr_index), struct_arg.Pool_seg, struct_arg.L_cumul_nbr_brkpt_per_seg, struct_arg.S_intersection_count, struct_arg.W_next_node_nbr, struct_arg.T_time, gen, four_lign[2], four_lign[3]);
-
-            if ((info_collect.Coa_times) && (!simu_param.Continuous_time_approxim))
-            {
-                info_collect.Nbr_coa.at(gen) += 1;
-            }
         }
         else if (four_lign[2] != nullptr)
         {

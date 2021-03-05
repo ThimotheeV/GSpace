@@ -12,7 +12,7 @@
 void coa_table_c::set_coa_event(int left_brkpt_l, int right_brkpt_r, int num_node_u, std::vector<int> childs_node, double T_time, int gen)
 {
     auto event = std::make_tuple(left_brkpt_l, right_brkpt_r, num_node_u, childs_node, T_time, gen);
-    if (Coalescence_table.capacity() < Coalescence_table.size() + 1)
+    if (Coalescence_table.capacity() <= Coalescence_table.size())
     {
         Coalescence_table.reserve(Coalescence_table.capacity() * 2);
     }
@@ -21,11 +21,11 @@ void coa_table_c::set_coa_event(int left_brkpt_l, int right_brkpt_r, int num_nod
 
 void coa_table_c::set_coa_event(coa_event_t event)
 {
-    if (Coalescence_table.capacity() < Coalescence_table.size() + 1)
+    if (Coalescence_table.capacity() <= Coalescence_table.size())
     {
         Coalescence_table.reserve(Coalescence_table.capacity() * 2);
     }
-    Coalescence_table.push_back(std::move(event));
+    Coalescence_table.push_back(event);
 }
 
 std::vector<coa_event_t> const &coa_table_c::get_coa_table()
@@ -33,9 +33,19 @@ std::vector<coa_event_t> const &coa_table_c::get_coa_table()
     return Coalescence_table;
 }
 
+int &coa_table_c::get_left_brkpt_l(coa_event_t &event)
+{
+    return std::get<0>(event);
+}
+
 int const &coa_table_c::get_left_brkpt_l(coa_event_t const &event)
 {
     return std::get<0>(event);
+}
+
+int &coa_table_c::get_right_brkpt_r(coa_event_t &event)
+{
+    return std::get<1>(event);
 }
 
 int const &coa_table_c::get_right_brkpt_r(coa_event_t const &event)
@@ -80,20 +90,179 @@ std::vector<coa_event_t>::iterator coa_table_c::end()
     return Coalescence_table.end();
 }
 
+std::vector<coa_event_t>::const_iterator coa_table_c::begin() const
+{
+    return Coalescence_table.cbegin();
+}
+
+std::vector<coa_event_t>::const_iterator coa_table_c::end() const
+{
+    return Coalescence_table.cend();
+}
+
 std::size_t coa_table_c::size()
 {
     return Coalescence_table.size();
 }
 
+void coa_table_c::sort_by_num_u(std::size_t index_begin_zone_at_group)
+{
+    //sort by left_brkpt_l, right_brkpt_l and node_parent
+    // lambda function stored in a variable, the variable is a function !
+    auto p_l_r_sort_func = [](coa_event_t &event1, coa_event_t &event2) {
+        if (get_num_node_u(event1) < get_num_node_u(event2)) //Leaft_brkpt
+        {
+            return true;
+        }
+        else if (get_num_node_u(event1) == get_num_node_u(event2))
+        {
+            if (get_left_brkpt_l(event1) < get_left_brkpt_l(event2))
+            {
+                return true;
+            }
+            else if (get_left_brkpt_l(event1) == get_left_brkpt_l(event2))
+            {
+                return get_right_brkpt_r(event1) < get_right_brkpt_r(event2);
+            }
+        }
+        return false;
+    };
+
+    sort(Coalescence_table.begin() + index_begin_zone_at_group, Coalescence_table.end(), p_l_r_sort_func);
+}
+
 //Use after a multi-coa event
-// TODO WARNING : probleme si multicoalescence sur homologues sur même zone génomique?
+//Work if gen/gen algo (^^)
+//WARNING : Use after a potential multicoa event, node num need to be num and num+1
 void coa_table_c::group_multi_coa(std::size_t index_begin_zone_at_group)
 {
-    if ((!Coalescence_table.empty()) && (get_gen(Coalescence_table[0]) == -1))
-    {
-        throw std::logic_error("( Use this function in a gen_by_gen coa_table. Contact the developpers. I exit. )"); // TODO eclaircir ce mesage obscur
-    }
+    //Special case du to reshape_segs in multi coa process.
+    //p parent, c child => need to cut parent before other algo
+    // |---|---| c
+    // |-------| p
 
+    //sort by node_parent (parent first), left_brkpt_l, right_brkpt_l
+    // lambda function stored in a variable, the variable is a function !
+    auto p_l_r_sort_func = [](coa_event_t &event1, coa_event_t &event2) {
+        if (get_num_node_u(event1) > get_num_node_u(event2)) //Leaft_brkpt
+        {
+            return true;
+        }
+        else if (get_num_node_u(event1) == get_num_node_u(event2))
+        {
+            if (get_left_brkpt_l(event1) > get_left_brkpt_l(event2))
+            {
+                return true;
+            }
+            else if (get_left_brkpt_l(event1) == get_left_brkpt_l(event2))
+            {
+                return get_right_brkpt_r(event1) > get_right_brkpt_r(event2);
+            }
+        }
+        return false;
+    };
+
+    std::size_t parent_index = index_begin_zone_at_group;
+    std::size_t child_zone = index_begin_zone_at_group;
+
+    while (parent_index < Coalescence_table.size() - 1)
+    {
+        std::size_t end = Coalescence_table.size();
+        sort(Coalescence_table.begin() + index_begin_zone_at_group, Coalescence_table.end(), p_l_r_sort_func);
+
+        while ((get_num_node_u(Coalescence_table[parent_index]) == get_num_node_u(Coalescence_table[child_zone])) && (child_zone < end))
+        {
+            ++child_zone;
+        }
+
+        while (parent_index < child_zone)
+        {
+            std::size_t child_index = child_zone;
+            auto *parent = &Coalescence_table[parent_index];
+            while (child_index < end)
+            {
+                auto *child = &Coalescence_table[child_index];
+                std::size_t chi = 0;
+                while (chi < get_childs_node_c(*parent).size())
+                {
+                    int cut = false;
+                    if (get_childs_node_c(*parent).at(chi) == get_num_node_u(*child))
+                    {
+                        //Lp left parent, Rp right parent
+                        //Lc left child, Rc right child
+                        // |-------| p  OR // |-------| p   OR //    |-----| p
+                        // |---| c         //   |---| c        //  |----| c
+                        //parent need to be cut between Rp and Rc, the original will be [Lp : Rc] and the copy will be [Lc : Rp]
+                        if ((get_right_brkpt_r(*child) > get_left_brkpt_l(*parent)) && (get_right_brkpt_r(*child) < get_right_brkpt_r(*parent)))
+                        {
+                            //split coa_event in two : one zone overlapping and the rest
+                            //push back the copy
+                            set_coa_event(*parent);
+                            //WARNING potentialy bad ref du to resize of vector
+                            child = &Coalescence_table[child_index];
+                            parent = &Coalescence_table[parent_index];
+                            //Original
+                            get_right_brkpt_r(*parent) = get_right_brkpt_r(*child);
+                            //Copy
+                            get_left_brkpt_l(Coalescence_table[Coalescence_table.size() - 1]) = get_right_brkpt_r(*child);
+                            cut = true;
+                        }
+                        // |-------| p
+                        //     |---| c
+                        if ((get_left_brkpt_l(*child) > get_left_brkpt_l(*parent)) && (get_right_brkpt_r(*child) == get_right_brkpt_r(*parent)))
+                        {
+                            //split coa_event in two : one zone overlapping and the rest
+                            //push back the copy
+                            set_coa_event(*parent);
+                            //WARNING potentialy bad ref du to resize of vector
+                            child = &Coalescence_table[child_index];
+                            parent = &Coalescence_table[parent_index];
+                            //Original
+                            get_right_brkpt_r(*parent) = get_left_brkpt_l(*child);
+                            //Copy
+                            get_left_brkpt_l(Coalescence_table[Coalescence_table.size() - 1]) = get_left_brkpt_l(*child);
+                            cut = true;
+                        }
+
+                        // |---| p                        //   |---| p                       // |---| p
+                        // |-------| c                    // |-------| c                     //   |-----| c
+                        //child need to be cut between Rp and Rc, the original will be [Lc : Rp] and the copy will be [Lp : Rc]
+                        if ((get_right_brkpt_r(*child) > get_right_brkpt_r(*parent)) && (get_left_brkpt_l(*child) < get_right_brkpt_r(*parent)))
+                        {
+                            set_coa_event(*child);
+
+                            child = &Coalescence_table[child_index];
+                            parent = &Coalescence_table[parent_index];
+
+                            get_right_brkpt_r(*child) = get_right_brkpt_r(*parent);
+                            get_left_brkpt_l(Coalescence_table[Coalescence_table.size() - 1]) = get_right_brkpt_r(*parent);
+                            cut = true;
+                        }
+                        //     |---| p
+                        // |-------| c
+                        //child need to be cut between Lc and Lp
+                        if ((get_left_brkpt_l(*child) < get_left_brkpt_l(*parent)) && (get_right_brkpt_r(*child) == get_right_brkpt_r(*parent)))
+                        {
+                            set_coa_event(*child);
+
+                            child = &Coalescence_table[child_index];
+                            parent = &Coalescence_table[parent_index];
+
+                            get_right_brkpt_r(*child) = get_left_brkpt_l(*parent);
+                            get_left_brkpt_l(Coalescence_table[Coalescence_table.size() - 1]) = get_left_brkpt_l(*parent);
+                            cut = true;
+                        }
+                    }
+                    if (!cut)
+                    {
+                        ++chi;
+                    }
+                }
+                ++child_index;
+            }
+            ++parent_index;
+        }
+    }
     //sort by left_brkpt_l, right_brkpt_l and node_parent
     // lambda function stored in a variable, the variable is a function !
     auto l_r_sort_func = [](coa_event_t &event1, coa_event_t &event2) {
@@ -103,7 +272,7 @@ void coa_table_c::group_multi_coa(std::size_t index_begin_zone_at_group)
         }
         else if (get_left_brkpt_l(event1) == get_left_brkpt_l(event2))
         {
-            if (get_right_brkpt_r(event1) < get_right_brkpt_r(event2))
+            if (get_right_brkpt_r(event1) > get_right_brkpt_r(event2))
             {
                 return true;
             }
@@ -115,49 +284,7 @@ void coa_table_c::group_multi_coa(std::size_t index_begin_zone_at_group)
         return false;
     };
 
-    //begin sorting
-    //just handle the new coalescence entry not the old one (already handle)
-    sort(Coalescence_table.begin() + index_begin_zone_at_group, Coalescence_table.end(), l_r_sort_func);
-
-    std::size_t i = index_begin_zone_at_group;
-
-    //Separate overlapping coalescence and the rest
-    while (i < Coalescence_table.size() - 1)
-    {
-        //overlap here
-        if (get_left_brkpt_l(Coalescence_table[i]) == get_left_brkpt_l(Coalescence_table[i + 1]))
-        {
-            //Need to resize it to make obvious overlap
-            if (get_right_brkpt_r(Coalescence_table[i]) != get_right_brkpt_r(Coalescence_table[i + 1]))
-            {
-                //split coa_event in two : one zone overlapping and the rest
-                set_coa_event(Coalescence_table[i + 1]);
-                //TODO : Changer les get en accesseurs
-                std::get<1>(Coalescence_table[i + 1]) = get_right_brkpt_r(Coalescence_table[i]);
-                std::get<0>(Coalescence_table[Coalescence_table.size() - 1]) = get_right_brkpt_r(Coalescence_table[i]);
-                //sort and continue
-                sort(Coalescence_table.begin() + index_begin_zone_at_group, Coalescence_table.end(), l_r_sort_func);
-                //begin again
-                i = index_begin_zone_at_group - 1;
-            }
-        }
-        else
-        {
-            if (get_right_brkpt_r(Coalescence_table[i]) == get_right_brkpt_r(Coalescence_table[i + 1]))
-            {
-                //split coa_event in two : one zone overlapping and the rest
-                set_coa_event(Coalescence_table[i]);
-                std::get<1>(Coalescence_table[i]) = get_left_brkpt_l(Coalescence_table[i + 1]);
-                std::get<0>(Coalescence_table[Coalescence_table.size() - 1]) = get_left_brkpt_l(Coalescence_table[i + 1]);
-                //sort and continue
-                sort(Coalescence_table.begin() + index_begin_zone_at_group, Coalescence_table.end(), l_r_sort_func);
-                //begin again
-                i = index_begin_zone_at_group - 1;
-            }
-        }
-        ++i;
-    }
-    i = Coalescence_table.size() - 1;
+    std::size_t i = Coalescence_table.size() - 1;
 
     //Safety first
     sort(Coalescence_table.begin() + index_begin_zone_at_group, Coalescence_table.end(), l_r_sort_func);
@@ -213,23 +340,12 @@ tree_gen_c::tree_gen_c(coa_table_c const &coa_table, int next_node_ident, int n_
 
     // create first empty Ancestry_tree
     // std::vector<std::tuple<childs_node, time_t, gen, nbr_leaf_for_node>>;
-    Ancestry_tree = top_down_tree_t(Max_u, std::make_tuple(std::vector<int>(), 0, 0, 1));
+    Ancestry_tree = top_down_tree_t(Max_u, std::make_tuple(std::vector<int>(), 0, 0));
 }
 
 top_down_tree_t const &tree_gen_c::get_tree()
 {
     return Ancestry_tree;
-}
-
-int tree_gen_c::nbr_leaf_for_node(std::vector<int> const &node_childs)
-{
-    int sum_leaf = 0;
-    for (auto const &child : node_childs)
-    {
-        sum_leaf += std::get<3>(Ancestry_tree[child]);
-    }
-
-    return sum_leaf;
 }
 
 //TODO : Peut etre à changer
@@ -256,7 +372,7 @@ std::tuple<int, int, double> tree_gen_c::set_next_tree()
     Begin_sequence = get_left_brkpt_l(I_insert_order_recomb[index_table_I]);
     while (Begin_sequence == get_right_brkpt_r(R_remove_order_recomb[index_table_R])) // never happened for first tree
     {
-        Ancestry_tree[get_num_node_u(R_remove_order_recomb[index_table_R])] = std::make_tuple(std::vector<int>(), 0, 0, 0);
+        Ancestry_tree[get_num_node_u(R_remove_order_recomb[index_table_R])] = std::make_tuple(std::vector<int>(), 0, 0);
         index_table_R += 1;
     }
 
@@ -265,7 +381,7 @@ std::tuple<int, int, double> tree_gen_c::set_next_tree()
     while ((Begin_sequence == get_left_brkpt_l(I_insert_order_recomb[index_table_I])) && (index_table_I < I_insert_order_recomb.size()))
     {
         coa_event_t event = I_insert_order_recomb[index_table_I];
-        Ancestry_tree[get_num_node_u(event)] = std::make_tuple(get_childs_node_c(event), get_time_t(event), get_gen(event), nbr_leaf_for_node(get_childs_node_c(event)));
+        Ancestry_tree[get_num_node_u(event)] = std::make_tuple(get_childs_node_c(event), get_time_t(event), get_gen(event));
         index_table_I += 1;
     }
 

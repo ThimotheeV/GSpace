@@ -76,7 +76,7 @@ void output_stat_files(simu_param_c const &simu_p, info_collector_c const &info,
     head.shrink_to_fit();
     if (rep == 0)
     {
-        print_output(simu_p.Generic_data_filename+"_Global_Stats.txt", head,"over");
+        print_output(simu_p.Generic_data_filename + "_Global_Stats.txt", head, "over");
     }
     //for output
     rep += 1; // RL risqué de changer ca ici, plutot faire une variable locale.
@@ -171,7 +171,7 @@ void output_stat_files(simu_param_c const &simu_p, info_collector_c const &info,
             //print head
             std::string temp = simu_p.Generic_data_filename + "_" + std::to_string(rep) + "_Chr_" + std::to_string(chr + 1) + "_Stats_per_loc.txt";
             head[0] = "Locus";
-            print_output(temp, head,"over");
+            print_output(temp, head, "over");
 
             for (int loc = 0; loc < loc_nbr; ++loc)
             {
@@ -198,7 +198,7 @@ void output_stat_files(simu_param_c const &simu_p, info_collector_c const &info,
                 }
 
                 stats_loc.shrink_to_fit();
-                print_output(temp, stats_loc,"app");
+                print_output(temp, stats_loc, "app");
             }
         }
     }
@@ -272,35 +272,37 @@ void output_stat_files(simu_param_c const &simu_p, info_collector_c const &info,
         std::string filename = simu_p.Generic_data_filename + "_" + std::to_string(rep) + "_Emp_disp.txt";
         head[0] = "Step";
         head[1] = "X";
-        if( info.Emp_axial_disp.size() == 2 )
+        if (info.Emp_axial_disp.size() == 2)
         {
             head[2] = "Y";
         }
         print_output(filename, head, "over");
-        
+
         std::ostringstream streamObj;
         // Set precision to 2 digits
         streamObj << std::setprecision(15) << std::setw(17);
-        
-        std::vector<std::string> stats_run(3,"");
+
+        std::vector<std::string> stats_run(3, "");
         std::size_t max_size;
         if (info.Emp_axial_disp.size() == 2)
         {
-            max_size = std::max(info.Emp_axial_disp.at(0).size(),info.Emp_axial_disp.at(1).size());
+            max_size = std::max(info.Emp_axial_disp.at(0).size(), info.Emp_axial_disp.at(1).size());
         }
-        else{
+        else
+        {
             max_size = info.Emp_axial_disp.at(0).size();
         }
         for (std::size_t i = 0; i < max_size; ++i)
         {
-            stats_run[0] += std::to_string(static_cast<int>(i - (max_size - 1)/2));
-            if (fabs(static_cast<int>(i - (max_size - 1)/2)) <= ((info.Emp_axial_disp.at(0).size() - 1) / 2))
+            stats_run[0] += std::to_string(static_cast<int>(i - (max_size - 1) / 2));
+            if (fabs(static_cast<int>(i - (max_size - 1) / 2)) <= ((info.Emp_axial_disp.at(0).size() - 1) / 2))
             {
                 //Add double to stream to set the precision & width
-                streamObj.str(""); streamObj.clear();
+                streamObj.str("");
+                streamObj.clear();
                 if (info.Emp_axial_disp.at(0).size() < max_size)
                 {
-                    streamObj << info.Emp_axial_disp.at(0).at(i - ((max_size - 1)/2 - (info.Emp_axial_disp.at(0).size() - 1)/2));
+                    streamObj << info.Emp_axial_disp.at(0).at(i - ((max_size - 1) / 2 - (info.Emp_axial_disp.at(0).size() - 1) / 2));
                 }
                 else
                 {
@@ -314,13 +316,14 @@ void output_stat_files(simu_param_c const &simu_p, info_collector_c const &info,
             }
             if (info.Emp_axial_disp.size() == 2)
             {
-                if (fabs(static_cast<int>(i - (max_size - 1)/2)) <= ((info.Emp_axial_disp.at(1).size() - 1) /  2))
+                if (fabs(static_cast<int>(i - (max_size - 1) / 2)) <= ((info.Emp_axial_disp.at(1).size() - 1) / 2))
                 {
                     //Add double to stream to set the precision & width
-                    streamObj.str(""); streamObj.clear();
+                    streamObj.str("");
+                    streamObj.clear();
                     if (info.Emp_axial_disp.at(1).size() < max_size)
                     {
-                        streamObj << info.Emp_axial_disp.at(1).at(i - ((max_size - 1)/2 - (info.Emp_axial_disp.at(1).size() - 1)/2));
+                        streamObj << info.Emp_axial_disp.at(1).at(i - ((max_size - 1) / 2 - (info.Emp_axial_disp.at(1).size() - 1) / 2));
                     }
                     else
                     {
@@ -334,58 +337,66 @@ void output_stat_files(simu_param_c const &simu_p, info_collector_c const &info,
                     stats_run[0] += "\t0.00000000000000000";
                 }
             }
-//            if (i != (max_size - 1))
-//            {
-                stats_run[0] += "\n";
-//            }
+            //            if (i != (max_size - 1))
+            //            {
+            stats_run[0] += "\n";
+            //            }
         }
         //Add double to stream to set the precision & width
-        streamObj.str(""); streamObj.clear();
+        streamObj.str("");
+        streamObj.clear();
         streamObj << info.Mean_emp_axial_disp.at(0);
         stats_run[2] += "\nEmpirical dispersal mean (X [, Y]) :\t" + streamObj.str();
         if (info.Mean_emp_axial_disp.size() == 2)
         {
             //Add double to stream to set the precision & width
-            streamObj.str(""); streamObj.clear();
+            streamObj.str("");
+            streamObj.clear();
             streamObj << info.Mean_emp_axial_disp.at(1);
             stats_run[2] += "\t" + streamObj.str();
         }
         stats_run[2] += "\n";
         //Add double to stream to set the precision & width
-        streamObj.str(""); streamObj.clear();
+        streamObj.str("");
+        streamObj.clear();
         streamObj << info.Sig_emp_axial_disp.at(0);
         stats_run[2] += "Empirical dispersal sigma2 (X [, Y]) :\t" + streamObj.str();
         if (info.Sig_emp_axial_disp.size() == 2)
         {
-         //Add double to stream to set the precision & width
-         streamObj.str(""); streamObj.clear();
-         streamObj << info.Sig_emp_axial_disp.at(1);
-         stats_run[2] += "\t" + streamObj.str();
+            //Add double to stream to set the precision & width
+            streamObj.str("");
+            streamObj.clear();
+            streamObj << info.Sig_emp_axial_disp.at(1);
+            stats_run[2] += "\t" + streamObj.str();
         }
         stats_run[2] += "\n";
         //Add double to stream to set the precision & width
-        streamObj.str(""); streamObj.clear();
+        streamObj.str("");
+        streamObj.clear();
         streamObj << info.Skew_emp_axial_disp.at(0);
         stats_run[2] += "Empirical dispersal skewness (X [, Y]) :\t" + streamObj.str();
-         if (info.Skew_emp_axial_disp.size() == 2)
-         {
-             //Add double to stream to set the precision & width
-             streamObj.str(""); streamObj.clear();
-             streamObj << info.Skew_emp_axial_disp.at(1);
-             stats_run[2] += "\t" + streamObj.str();
-         }
+        if (info.Skew_emp_axial_disp.size() == 2)
+        {
+            //Add double to stream to set the precision & width
+            streamObj.str("");
+            streamObj.clear();
+            streamObj << info.Skew_emp_axial_disp.at(1);
+            stats_run[2] += "\t" + streamObj.str();
+        }
         stats_run[2] += "\n";
         //Add double to stream to set the precision & width
-        streamObj.str(""); streamObj.clear();
+        streamObj.str("");
+        streamObj.clear();
         streamObj << info.Kurt_emp_axial_disp.at(0);
         stats_run[2] += "Empirical dispersal kurtosis (X [, Y]) :\t" + streamObj.str();
-         if (info.Kurt_emp_axial_disp.size() == 2)
-         {
-             //Add double to stream to set the precision & width
-             streamObj.str(""); streamObj.clear();
-             streamObj << info.Kurt_emp_axial_disp.at(1);
-             stats_run[2] += "\t" + streamObj.str();
-         }
+        if (info.Kurt_emp_axial_disp.size() == 2)
+        {
+            //Add double to stream to set the precision & width
+            streamObj.str("");
+            streamObj.clear();
+            streamObj << info.Kurt_emp_axial_disp.at(1);
+            stats_run[2] += "\t" + streamObj.str();
+        }
 
         print_output(filename, stats_run, "app");
     }
@@ -735,54 +746,54 @@ void fasta_output(std::string const &path_to_file, std::string const &generic_da
 
 void phylip_output(std::string const &path_to_file, std::string const &generic_data_filename, std::vector<std::array<int, 2>> const &coord_vec, std::vector<std::vector<int>> const &ancestry_seq, std::vector<std::vector<std::pair<int, int>>> const &sample_mutated_state_ind, int ploidy, int chrom)
 {
-     std::ofstream phylip(path_to_file);
+    std::ofstream phylip(path_to_file);
 
-     if (phylip.is_open())
-     {
-         if (coord_vec.size() * ploidy != sample_mutated_state_ind.size())
-         {
-             throw std::logic_error("( In phylip_output() : coord_vec.size() * ploidy != sample_mutated_state.size(). I exit. )");
-         }
+    if (phylip.is_open())
+    {
+        if (coord_vec.size() * ploidy != sample_mutated_state_ind.size())
+        {
+            throw std::logic_error("( In phylip_output() : coord_vec.size() * ploidy != sample_mutated_state.size(). I exit. )");
+        }
 
-         // + 1 for the ancestral sequence
-         phylip << sample_mutated_state_ind.size() + 1 << " " << ancestry_seq[0].size() << std::endl;
+        // + 1 for the ancestral sequence
+        phylip << sample_mutated_state_ind.size() + 1 << " " << ancestry_seq[0].size() << std::endl;
 
-         //write the ancestral sequence for each chromosome
-         //Full nucleotide sequence reconstruction
-         std::vector<std::pair<int, int>> anc_seq_mut_seq{};
-         std::string full_anc_seq = reconstitution_full_nucl_seq_indiv(ancestry_seq[chrom], anc_seq_mut_seq);
+        //write the ancestral sequence for each chromosome
+        //Full nucleotide sequence reconstruction
+        std::vector<std::pair<int, int>> anc_seq_mut_seq{};
+        std::string full_anc_seq = reconstitution_full_nucl_seq_indiv(ancestry_seq[chrom], anc_seq_mut_seq);
 
-         phylip.fill(' ');
-         phylip.width(10);
-         phylip << std::left << "Anc_" + std::to_string(chrom + 1) + " " << full_anc_seq << std::endl;
+        phylip.fill(' ');
+        phylip.width(10);
+        phylip << std::left << "Anc_" + std::to_string(chrom + 1) + " " << full_anc_seq << std::endl;
 
-         //loop over individuals
-         for (std::size_t ind = 0; ind < sample_mutated_state_ind.size(); ind += ploidy)
-         {
-             //Full nucleotide sequence reconstruction
-             std::string full_seq_indiv = reconstitution_full_nucl_seq_indiv(ancestry_seq[chrom], sample_mutated_state_ind[ind]);
+        //loop over individuals
+        for (std::size_t ind = 0; ind < sample_mutated_state_ind.size(); ind += ploidy)
+        {
+            //Full nucleotide sequence reconstruction
+            std::string full_seq_indiv = reconstitution_full_nucl_seq_indiv(ancestry_seq[chrom], sample_mutated_state_ind[ind]);
 
-             phylip.fill(' ');
-             phylip.width(10);
-             phylip << std::left << std::to_string( (int) ind / ploidy + 1) + "_" + std::to_string(chrom + 1) + "_1 " << full_seq_indiv << std::endl;
+            phylip.fill(' ');
+            phylip.width(10);
+            phylip << std::left << std::to_string((int)ind / ploidy + 1) + "_" + std::to_string(chrom + 1) + "_1 " << full_seq_indiv << std::endl;
 
-             std::string full_seq2_indiv;
-             if (ploidy == 2)
-             {
-                 //Full nucleotide sequence reconstruction
-                 full_seq2_indiv = reconstitution_full_nucl_seq_indiv(ancestry_seq[chrom], sample_mutated_state_ind[ind + 1]);
+            std::string full_seq2_indiv;
+            if (ploidy == 2)
+            {
+                //Full nucleotide sequence reconstruction
+                full_seq2_indiv = reconstitution_full_nucl_seq_indiv(ancestry_seq[chrom], sample_mutated_state_ind[ind + 1]);
 
-                 phylip.fill(' ');
-                 phylip.width(10);
-                 phylip << std::left << std::to_string( (int) ind / ploidy + 1) + "_" + std::to_string(chrom + 1) + "_2 " << full_seq2_indiv << std::endl;
-             }
-         }
-         phylip.close();
-     }
-     else
-     {
-         throw std::invalid_argument("( Unable to open " + path_to_file + ". I exit. )");
-     }
+                phylip.fill(' ');
+                phylip.width(10);
+                phylip << std::left << std::to_string((int)ind / ploidy + 1) + "_" + std::to_string(chrom + 1) + "_2 " << full_seq2_indiv << std::endl;
+            }
+        }
+        phylip.close();
+    }
+    else
+    {
+        throw std::invalid_argument("( Unable to open " + path_to_file + ". I exit. )");
+    }
 }
 
 void seq_char_output(std::string const &path_to_file, std::vector<std::array<int, 2>> const &coord_vec, std::vector<std::vector<std::vector<std::pair<int, int>>>> const &sample_mutated_state_chr, int ploidy)
@@ -858,18 +869,17 @@ void write_beforerun_param_settings_summary(std::string const &path_to_file, std
         param_summary_f << "Sample size X : " << demo_param.Nbr_node_sampled_x << std::endl;
         param_summary_f << "Sample size Y : " << demo_param.Nbr_node_sampled_y << std::endl;
         param_summary_f << "Number of sampled individuals per node :" << std::endl;
-        size_t node=0;
+        size_t node = 0;
         for (auto node_sample_size : samp_param.Sample_size_per_node)
         {
-            param_summary_f <<  " " << node_sample_size << "(" << samp_param.Sample_coord_vec.at(node)[0] << "," << samp_param.Sample_coord_vec.at(node)[1] << ")";
-            node+=node_sample_size;
-
+            param_summary_f << " " << node_sample_size << "(" << samp_param.Sample_coord_vec.at(node)[0] << "," << samp_param.Sample_coord_vec.at(node)[1] << ")";
+            node += node_sample_size;
         }
         param_summary_f << std::endl;
         param_summary_f << "Total number of sampled individuals : " << samp_param.n_total_sample_size << std::endl;
         param_summary_f << "Ploidy : " << samp_param.Ploidy << std::endl;
-        param_summary_f << "Lattice size X : " << demo_param.Lattice_size[0] + 1 << std::endl;
-        param_summary_f << "Lattice size Y : " << demo_param.Lattice_size[1] + 1 << std::endl;
+        param_summary_f << "Lattice size X : " << demo_param.Lattice_size[0] << std::endl;
+        param_summary_f << "Lattice size Y : " << demo_param.Lattice_size[1] << std::endl;
         param_summary_f << "Edge effects : " << e.ReverseMap[demo_param.Edge_effects] << std::endl;
         param_summary_f << "Number of individuals per lattice node : " << demo_param.Pop_size_per_node << std::endl;
         param_summary_f << "Dispersal distribution : " << d.ReverseMap[demo_param.Dispersal_distrib] << std::endl;
@@ -984,7 +994,8 @@ void write_afterrun_param_settings_summary(std::string const &path_to_file, simu
             }
             if (info_collect.Cumul_fwd_disp_distrib.size() == 2)
             {
-                param_summary_f << std::endl << "Cumulative forward dispersal distribution on dim2 (move, prob) : " << std::endl;
+                param_summary_f << std::endl
+                                << "Cumulative forward dispersal distribution on dim2 (move, prob) : " << std::endl;
                 for (auto move = -demo_param.Disp_dist_max[1]; move <= demo_param.Disp_dist_max[1]; ++move)
                 {
                     param_summary_f << move << "\t" << std::setprecision(15) << std::setw(17) << info_collect.Cumul_fwd_disp_distrib[1][move + demo_param.Disp_dist_max[1]] << std::endl;
@@ -1033,29 +1044,30 @@ void write_afterrun_param_settings_summary(std::string const &path_to_file, simu
         if (info_collect.Effective_disp)
         {
             size_t max_size;
-            
+
             param_summary_f << std::endl;
             param_summary_f << "Empirical dispersal distribution ( step, freqX";
-            if( info_collect.Emp_axial_disp_mean_over_rep.size() == 2 )
+            if (info_collect.Emp_axial_disp_mean_over_rep.size() == 2)
             {
                 param_summary_f << ", freqY ";
             }
             param_summary_f << ") : " << std::endl;
-            
+
             if (info_collect.Emp_axial_disp_mean_over_rep.size() == 2)
             {
-                max_size = std::max(info_collect.Emp_axial_disp_mean_over_rep.at(0).size(),info_collect.Emp_axial_disp_mean_over_rep.at(1).size());
+                max_size = std::max(info_collect.Emp_axial_disp_mean_over_rep.at(0).size(), info_collect.Emp_axial_disp_mean_over_rep.at(1).size());
             }
-            else{
+            else
+            {
                 max_size = info_collect.Emp_axial_disp_mean_over_rep.at(0).size();
             }
             for (std::size_t i = 0; i < max_size; ++i)
             {
-                            param_summary_f << static_cast<int>(i - (max_size - 1)/2);
-                if (fabs(static_cast<int>(i - (max_size - 1)/2)) <= ((info_collect.Emp_axial_disp_mean_over_rep.at(0).size() - 1) / 2) )
+                param_summary_f << static_cast<int>(i - (max_size - 1) / 2);
+                if (fabs(static_cast<int>(i - (max_size - 1) / 2)) <= ((info_collect.Emp_axial_disp_mean_over_rep.at(0).size() - 1) / 2))
                 {
                     param_summary_f << "\t" << std::setprecision(15) << std::setw(17)
-                                    << info_collect.Emp_axial_disp_mean_over_rep.at(0).at(i - ((max_size - 1)/2 - (info_collect.Emp_axial_disp_mean_over_rep.at(0).size() - 1)/2));
+                                    << info_collect.Emp_axial_disp_mean_over_rep.at(0).at(i - ((max_size - 1) / 2 - (info_collect.Emp_axial_disp_mean_over_rep.at(0).size() - 1) / 2));
                 }
                 else
                 {
@@ -1063,9 +1075,9 @@ void write_afterrun_param_settings_summary(std::string const &path_to_file, simu
                 }
                 if (info_collect.Emp_axial_disp_mean_over_rep.size() == 2)
                 {
-                    if (fabs(static_cast<int>(i - (max_size - 1)/2)) <= ((info_collect.Emp_axial_disp_mean_over_rep.at(1).size() - 1) /  2))
+                    if (fabs(static_cast<int>(i - (max_size - 1) / 2)) <= ((info_collect.Emp_axial_disp_mean_over_rep.at(1).size() - 1) / 2))
                     {
-                        param_summary_f << "\t" << std::setprecision(15) << std::setw(17) << info_collect.Emp_axial_disp_mean_over_rep.at(1).at(i - ((max_size - 1)/2 - (info_collect.Emp_axial_disp_mean_over_rep.at(1).size() - 1)/2));
+                        param_summary_f << "\t" << std::setprecision(15) << std::setw(17) << info_collect.Emp_axial_disp_mean_over_rep.at(1).at(i - ((max_size - 1) / 2 - (info_collect.Emp_axial_disp_mean_over_rep.at(1).size() - 1) / 2));
                     }
                     else
                     {
@@ -1074,32 +1086,32 @@ void write_afterrun_param_settings_summary(std::string const &path_to_file, simu
                 }
                 param_summary_f << std::endl;
             }
-            
+
             size_t dim = 0;
             for (auto itr = info_collect.Emp_axial_disp_mean_over_rep.begin(); itr < info_collect.Emp_axial_disp_mean_over_rep.end(); ++(itr), ++dim)
             {
-                double check_sum=0.0;
+                double check_sum = 0.0;
                 int dist;
-                size_t step=0;
+                size_t step = 0;
                 for (auto itr2 = itr->begin(); itr2 < itr->end(); ++(itr2), ++step)
                 {
-                    dist = static_cast<int>(step) - static_cast<int>(itr->size() - 1)/2;
+                    dist = static_cast<int>(step) - static_cast<int>(itr->size() - 1) / 2;
                     info_collect.Mean_emp_axial_disp_mean_over_rep[dim] += (*itr2) * fabs(dist);
                     info_collect.Sig_emp_axial_disp_mean_over_rep[dim] += (*itr2) * dist * dist;
                     info_collect.Kurt_emp_axial_disp_mean_over_rep[dim] += (*itr2) * dist * dist * dist * dist;
                     info_collect.Skew_emp_axial_disp_mean_over_rep[dim] += (*itr2) * dist * dist * dist;
                     check_sum += (*itr2);
                 }
-                if ( fabs(1.0 - check_sum) > DBL_EPSILON)
+                if (fabs(1.0 - check_sum) > DBL_EPSILON)
                 {
                     throw std::logic_error("( During computation of the mean empirical dispersal distribution among runs, GSpace found that the sum of distribution terms is not 1.0 but " + std::to_string(check_sum) + "\nContact the developpers. I exit. )");
                 }
                 info_collect.Kurt_emp_axial_disp_mean_over_rep[dim] = info_collect.Kurt_emp_axial_disp_mean_over_rep[dim] / (info_collect.Sig_emp_axial_disp_mean_over_rep[dim] * info_collect.Sig_emp_axial_disp_mean_over_rep[dim]) - 3.0;
-                info_collect.Skew_emp_axial_disp_mean_over_rep[dim] = info_collect.Skew_emp_axial_disp_mean_over_rep[dim] / pow(info_collect.Sig_emp_axial_disp_mean_over_rep[dim],double(3/2));
+                info_collect.Skew_emp_axial_disp_mean_over_rep[dim] = info_collect.Skew_emp_axial_disp_mean_over_rep[dim] / pow(info_collect.Sig_emp_axial_disp_mean_over_rep[dim], double(3 / 2));
             }
 
             param_summary_f << std::endl
-            << "Empirical dispersal mean (X [, Y]) : " << std::setprecision(15) << std::setw(17) << info_collect.Mean_emp_axial_disp_mean_over_rep[0];
+                            << "Empirical dispersal mean (X [, Y]) : " << std::setprecision(15) << std::setw(17) << info_collect.Mean_emp_axial_disp_mean_over_rep[0];
             if (info_collect.Mean_emp_axial_disp_mean_over_rep.size() == 2)
             {
                 param_summary_f << "\t" << std::setprecision(15) << std::setw(17) << info_collect.Mean_emp_axial_disp_mean_over_rep[1];

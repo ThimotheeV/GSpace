@@ -1,7 +1,7 @@
 #include <vector>
 #include <string>
 
-static void check_tree(std::vector<std::tuple<std::vector<int>, double, int, int>> const &gene_tree, int MRCA_index, int nbr_of_sample, int rep)
+static void check_tree(std::vector<std::tuple<std::vector<int>, double, int>> const &gene_tree, int MRCA_index, int nbr_of_sample, int rep)
 {
     std::vector<int> node_file;
     node_file.reserve(MRCA_index);

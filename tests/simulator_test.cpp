@@ -31,7 +31,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -93,7 +93,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -169,7 +169,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -230,7 +230,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 3;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -287,7 +287,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -346,7 +346,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -417,7 +417,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -486,7 +486,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -545,7 +545,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 3;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -609,7 +609,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -683,7 +683,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -754,7 +754,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -818,7 +818,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -982,7 +982,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -1043,7 +1043,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -1119,7 +1119,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -1174,7 +1174,7 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {1, 1};
+        demo_param.Lattice_size = {2, 2};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -1237,9 +1237,9 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
-        demo_param.Population_size_N = demo_param.Pop_size_per_node * (demo_param.Lattice_size.at(0) + 1) * (demo_param.Lattice_size.at(1) + 1);
+        demo_param.Population_size_N = demo_param.Pop_size_per_node * demo_param.Lattice_size.at(0) * demo_param.Lattice_size.at(1);
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
         double g_geo_param = 0.2;
@@ -1285,9 +1285,9 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
-        demo_param.Population_size_N = demo_param.Pop_size_per_node * (demo_param.Lattice_size.at(0) + 1) * (demo_param.Lattice_size.at(1) + 1);
+        demo_param.Population_size_N = demo_param.Pop_size_per_node * demo_param.Lattice_size.at(0) * demo_param.Lattice_size.at(1);
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
         double g_geo_param = 0.2;
@@ -1334,9 +1334,9 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 2;
-        demo_param.Population_size_N = demo_param.Pop_size_per_node * (demo_param.Lattice_size.at(0) + 1) * (demo_param.Lattice_size.at(1) + 1);
+        demo_param.Population_size_N = demo_param.Pop_size_per_node * demo_param.Lattice_size.at(0) * demo_param.Lattice_size.at(1);
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
         double g_geo_param = 0.2;
@@ -1389,9 +1389,9 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 10;
-        demo_param.Population_size_N = demo_param.Pop_size_per_node * (demo_param.Lattice_size.at(0) + 1) * (demo_param.Lattice_size.at(1) + 1);
+        demo_param.Population_size_N = demo_param.Pop_size_per_node * demo_param.Lattice_size.at(0) * demo_param.Lattice_size.at(1);
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
         double g_geo_param = 0.2;
@@ -1447,9 +1447,9 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
-        demo_param.Population_size_N = demo_param.Pop_size_per_node * (demo_param.Lattice_size.at(0) + 1) * (demo_param.Lattice_size.at(1) + 1);
+        demo_param.Population_size_N = demo_param.Pop_size_per_node * demo_param.Lattice_size.at(0) * demo_param.Lattice_size.at(1);
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
         double g_geo_param = 0.2;
@@ -1502,9 +1502,9 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 10;
-        demo_param.Population_size_N = demo_param.Pop_size_per_node * (demo_param.Lattice_size.at(0) + 1) * (demo_param.Lattice_size.at(1) + 1);
+        demo_param.Population_size_N = demo_param.Pop_size_per_node * demo_param.Lattice_size.at(0) * demo_param.Lattice_size.at(1);
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
         double g_geo_param = 0.2;
@@ -1580,9 +1580,9 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 1};
+        demo_param.Lattice_size = {1, 2};
         demo_param.Pop_size_per_node = 1;
-        demo_param.Population_size_N = demo_param.Pop_size_per_node * (demo_param.Lattice_size.at(0) + 1) * (demo_param.Lattice_size.at(1) + 1);
+        demo_param.Population_size_N = demo_param.Pop_size_per_node * demo_param.Lattice_size.at(0) * demo_param.Lattice_size.at(1);
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.5;
         double g_geo_param = 0.2;
@@ -1641,9 +1641,9 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 1};
+        demo_param.Lattice_size = {1, 2};
         demo_param.Pop_size_per_node = 2;
-        demo_param.Population_size_N = demo_param.Pop_size_per_node * (demo_param.Lattice_size.at(0) + 1) * (demo_param.Lattice_size.at(1) + 1);
+        demo_param.Population_size_N = demo_param.Pop_size_per_node * demo_param.Lattice_size.at(0) * demo_param.Lattice_size.at(1);
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.5;
         double g_geo_param = 0.2;
@@ -1774,9 +1774,9 @@ TEST_CASE("simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 1};
+        demo_param.Lattice_size = {1, 2};
         demo_param.Pop_size_per_node = 10;
-        demo_param.Population_size_N = demo_param.Pop_size_per_node * (demo_param.Lattice_size.at(0) + 1) * (demo_param.Lattice_size.at(1) + 1);
+        demo_param.Population_size_N = demo_param.Pop_size_per_node * demo_param.Lattice_size.at(0) * demo_param.Lattice_size.at(1);
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.5;
         double g_geo_param = 0.2;
@@ -1902,7 +1902,7 @@ TEST_CASE("segregate_indiv_simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -1958,7 +1958,7 @@ TEST_CASE("segregate_indiv_simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -2055,7 +2055,7 @@ TEST_CASE("segregate_indiv_simulator_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;

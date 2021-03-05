@@ -115,7 +115,7 @@ void parser_str(std::string const &file_str)
         }
         if (param_name == "runnumber" || param_name == "runnbr")
         {
-            simu_param.Repetition_nbr = std::stoi(line_pair_key_value[1]);
+            simu_param.Repetition_nbr = static_cast<int>(std::stod(line_pair_key_value[1]));
             if (simu_param.Repetition_nbr < 1 || simu_param.Repetition_nbr > std::numeric_limits<int>::max())
             {
                 throw std::invalid_argument("( Run_Number should always be between 1 and max(int)=" +
@@ -236,7 +236,14 @@ void parser_str(std::string const &file_str)
         {
             simu_param.Phylip_output = convert_str_bool(line_pair_key_value[1]);
             if (simu_param.Phylip_output)
+            {
                 simu_param.Seq_char_output = true;
+            }
+            continue;
+        }
+        if (param_name == "tskit")
+        {
+            simu_param.Tskit_output = convert_str_bool(line_pair_key_value[1]);
             continue;
         }
 
@@ -383,7 +390,7 @@ void parser_str(std::string const &file_str)
         }
         if (param_name == "alleliclowerbound")
         {
-            muta_param.K_min = std::stoi(line_pair_key_value[1]);
+            muta_param.K_min = static_cast<int>(std::stod(line_pair_key_value[1]));
             if (muta_param.K_min < 1 || muta_param.K_min > 999)
             {
                 throw std::invalid_argument("( Allelic_Lower_Bound should always be between 1 and 999. Check settings. I exit. )");
@@ -392,7 +399,7 @@ void parser_str(std::string const &file_str)
         }
         if (param_name == "allelicupperbound")
         {
-            muta_param.K_max = std::stoi(line_pair_key_value[1]);
+            muta_param.K_max = static_cast<int>(std::stod(line_pair_key_value[1]));
             if (muta_param.K_max < 1 || muta_param.K_max > 999)
             {
                 throw std::invalid_argument("( Allelic_Upper_Bound should always be between 1 and 999. Check settings. I exit. )");
@@ -447,7 +454,7 @@ void parser_str(std::string const &file_str)
         // sequencelength (user version) ; sequencesize (IBDSim compatibility)
         if (param_name == "sequencelength" || param_name == "sequencesize")
         {
-            samp_param.Sequence_length = std::stoi(line_pair_key_value[1]);
+            samp_param.Sequence_length = static_cast<int>(std::stod(line_pair_key_value[1]));
             if (samp_param.Sequence_length < 1 || samp_param.Sequence_length > std::numeric_limits<int>::max())
             {
                 throw std::invalid_argument("( Sequence_Length/Sequence_Size should always be between 1 and max(int)=" +
@@ -494,7 +501,7 @@ void parser_str(std::string const &file_str)
         }
         if (param_name == "latticesizex")
         {
-            demo_param.Lattice_size[0] = std::stoi(line_pair_key_value[1]) - 1;
+            demo_param.Lattice_size[0] = static_cast<int>(stod(line_pair_key_value[1]));
             if (demo_param.Lattice_size[0] < 0 || demo_param.Lattice_size[0] > std::numeric_limits<int>::max())
             {
                 throw std::invalid_argument("( Lattice_Size_X should always be between 1 and max(int)=" +
@@ -504,7 +511,7 @@ void parser_str(std::string const &file_str)
         }
         if (param_name == "latticesizey")
         {
-            demo_param.Lattice_size[1] = std::stoi(line_pair_key_value[1]) - 1;
+            demo_param.Lattice_size[1] = static_cast<int>(stod(line_pair_key_value[1]));
             if (demo_param.Lattice_size[1] < 0 || demo_param.Lattice_size[1] > std::numeric_limits<int>::max())
             {
                 throw std::invalid_argument("( Lattice_Size_Y should always be between 1 and max(int)=" +
@@ -516,7 +523,7 @@ void parser_str(std::string const &file_str)
         // indpernode (user version) ; indperpop (IBDSim compatibility)
         if (param_name == "indpernode" || param_name == "indperpop")
         {
-            demo_param.Pop_size_per_node = std::stoi(line_pair_key_value[1]);
+            demo_param.Pop_size_per_node = static_cast<int>(std::stod(line_pair_key_value[1]));
             if (demo_param.Pop_size_per_node < 1 || demo_param.Pop_size_per_node > std::numeric_limits<int>::max())
             {
                 throw std::invalid_argument("( Ind_Per_Node/Ind_Per_Pop should always be between 1 and max(int)=" +
@@ -539,7 +546,7 @@ void parser_str(std::string const &file_str)
         }
         if (param_name == "samplesizex")
         {
-            demo_param.Nbr_node_sampled_x = std::stoi(line_pair_key_value[1]);
+            demo_param.Nbr_node_sampled_x = static_cast<int>(std::stod(line_pair_key_value[1]));
             if (demo_param.Nbr_node_sampled_x < 1 || demo_param.Nbr_node_sampled_x > std::numeric_limits<int>::max())
             {
                 throw std::invalid_argument("( Sample_Size_X should always be between 1 and max(int)=" +
@@ -549,7 +556,7 @@ void parser_str(std::string const &file_str)
         }
         if (param_name == "samplesizey")
         {
-            demo_param.Nbr_node_sampled_y = std::stoi(line_pair_key_value[1]);
+            demo_param.Nbr_node_sampled_y = static_cast<int>(std::stod(line_pair_key_value[1]));
             if (demo_param.Nbr_node_sampled_y < 1 || demo_param.Nbr_node_sampled_y > std::numeric_limits<int>::max())
             {
                 throw std::invalid_argument("( Sample_Size_Y should always be between 1 and max(int)=" +
@@ -559,7 +566,7 @@ void parser_str(std::string const &file_str)
         }
         if (param_name == "minsamplecoordinatex" || param_name == "minsamplecoordx")
         {
-            demo_param.Min_sample_coord_x = std::stoi(line_pair_key_value[1]) - 1;
+            demo_param.Min_sample_coord_x = static_cast<int>(std::stod(line_pair_key_value[1])) - 1;
             if (demo_param.Min_sample_coord_x < 0 || demo_param.Min_sample_coord_x > std::numeric_limits<int>::max())
             {
                 throw std::invalid_argument("( Min_Sample_Coordinate_X should always be between 1 and max(int)=" +
@@ -569,7 +576,7 @@ void parser_str(std::string const &file_str)
         }
         if (param_name == "minsamplecoordinatey" || param_name == "minsamplecoordy")
         {
-            demo_param.Min_sample_coord_y = std::stoi(line_pair_key_value[1]) - 1;
+            demo_param.Min_sample_coord_y = static_cast<int>(std::stod(line_pair_key_value[1])) - 1;
             if (demo_param.Min_sample_coord_y < 0 || demo_param.Min_sample_coord_y > std::numeric_limits<int>::max())
             {
                 throw std::invalid_argument("( Min_Sample_Coordinate_Y should always be between 1 and max(int)=" +
@@ -636,6 +643,7 @@ void parser_str(std::string const &file_str)
                     throw std::invalid_argument("( At least one value in Ind_Per_Node_Sampled found to be " + val_str + " but only integers are allowed. Check Ind_Per_Node_Sampled settings. I exit. )");
                 }
             }
+            samp_param.Sample_size_per_node.shrink_to_fit();
             continue;
         }
 
@@ -823,7 +831,7 @@ void parser_str(std::string const &file_str)
                 }
                 else if (value == "districoa" || value == "coalescencetimes" || value == "coatimes")
                 {
-                    info_collect.Coa_times = true;
+                    info_collect.MRCA_record = true;
                     continue;
                 }
                 else if (value == "effectivedispersal" || value == "empiricaldispersal" || value == "dispersal")
@@ -930,6 +938,7 @@ void check_param()
         }
     }
     // set equilibrium distribution of allelic/nucleotides ancestral states
+    //TODO : peut être fait plus efficassement => rand_nucl
     std::uniform_int_distribution<int> distrib;
     if (muta_param.Mod_mut_name == mut_model_enum::iam)
     {
@@ -1077,20 +1086,20 @@ void check_param()
                 auto file_str = read_file(simu_param.Migration_matrix_filename);
                 std::vector<std::string> file_line_str_vec = slice_unix_windows_file_by_line(file_str);
 
-                if (file_line_str_vec.size() != static_cast<std::size_t>((demo_param.Lattice_size[0] + 1) * (demo_param.Lattice_size[1] + 1)))
+                if (file_line_str_vec.size() != static_cast<std::size_t>((demo_param.Lattice_size[0]) * (demo_param.Lattice_size[1])))
                 {
-                    throw std::logic_error("( The Migration_Matrix file (" + simu_param.Migration_matrix_filename + ") does not have a number of lines corresponding to the number of subpopulations on the lattice = Lattice_Size_X *Lattice_Size_Y = " + std::to_string((demo_param.Lattice_size[0] + 1) * (demo_param.Lattice_size[1] + 1)) + ".Check Migration Matrix settings.I exit. )");
+                    throw std::logic_error("( The Migration_Matrix file (" + simu_param.Migration_matrix_filename + ") does not have a number of lines corresponding to the number of subpopulations on the lattice = Lattice_Size_X *Lattice_Size_Y = " + std::to_string((demo_param.Lattice_size[0]) * (demo_param.Lattice_size[1])) + ".Check Migration Matrix settings.I exit. )");
                 }
 
-                demo_param.Migration_mat.resize((demo_param.Lattice_size[0] + 1) * (demo_param.Lattice_size[1] + 1));
+                demo_param.Migration_mat.resize((demo_param.Lattice_size[0]) * (demo_param.Lattice_size[1]));
 
                 for (std::size_t i = 0; i < file_line_str_vec.size(); ++i)
                 {
                     std::string line_str = replace_spaces_tab_underscores_by_comma(file_line_str_vec.at(i));
                     auto line_double_vec = double_vector_parse_by_comma(line_str);
-                    if (line_double_vec.size() != static_cast<std::size_t>((demo_param.Lattice_size[0] + 1) * (demo_param.Lattice_size[1] + 1)))
+                    if (line_double_vec.size() != static_cast<std::size_t>((demo_param.Lattice_size[0]) * (demo_param.Lattice_size[1])))
                     {
-                        throw std::logic_error("( In the Migration_Matrix file (" + simu_param.Migration_matrix_filename + "), line " + std::to_string(i + 1) + " does not have a number of elements corresponding to the number of subpopulations on the lattice = Lattice_Size_X * Lattice_Size_Y = " + std::to_string((demo_param.Lattice_size[0] + 1) * (demo_param.Lattice_size[1] + 1)) + ". Check settings. I exit. )");
+                        throw std::logic_error("( In the Migration_Matrix file (" + simu_param.Migration_matrix_filename + "), line " + std::to_string(i + 1) + " does not have a number of elements corresponding to the number of subpopulations on the lattice = Lattice_Size_X * Lattice_Size_Y = " + std::to_string((demo_param.Lattice_size[0]) * (demo_param.Lattice_size[1])) + ". Check settings. I exit. )");
                     }
                     double sum{0.0};
                     for (std::size_t j = 0; j < line_double_vec.size(); ++j)
@@ -1117,20 +1126,20 @@ void check_param()
                 auto file_str = read_file(simu_param.Nodesize_matrix_filename);
                 std::vector<std::string> file_line_str_vec = slice_unix_windows_file_by_line(file_str);
 
-                if (file_line_str_vec.size() != static_cast<std::size_t>(demo_param.Lattice_size[1] + 1))
+                if (file_line_str_vec.size() != static_cast<std::size_t>(demo_param.Lattice_size[1]))
                 {
-                    throw std::logic_error("( The subpopsize_matrix file (" + simu_param.Nodesize_matrix_filename + ") does not have a number of lines corresponding to Lattice_Size_Y=" + std::to_string(demo_param.Lattice_size[1] + 1) + ". Check settings. I exit. )");
+                    throw std::logic_error("( The subpopsize_matrix file (" + simu_param.Nodesize_matrix_filename + ") does not have a number of lines corresponding to Lattice_Size_Y=" + std::to_string(demo_param.Lattice_size[1]) + ". Check settings. I exit. )");
                 }
 
-                demo_param.Nodesize_mat.resize(demo_param.Lattice_size[1] + 1);
+                demo_param.Nodesize_mat.resize(demo_param.Lattice_size[1]);
 
                 for (int i = file_line_str_vec.size() - 1; i >= 0; i--)
                 {
                     std::string line_str = replace_spaces_tab_underscores_by_comma(file_line_str_vec.at(i));
                     auto line_double_vec = double_vector_parse_by_comma(line_str);
-                    if (line_double_vec.size() != static_cast<std::size_t>(demo_param.Lattice_size[0] + 1))
+                    if (line_double_vec.size() != static_cast<std::size_t>(demo_param.Lattice_size[0]))
                     {
-                        throw std::logic_error("( In the subpopsize_matrix file (" + simu_param.Nodesize_matrix_filename + "), line " + std::to_string(i + 1) + " does not have a number of elements corresponding to Lattice_Size_X=" + std::to_string(demo_param.Lattice_size[1] + 1) + ". Check settings. I exit. )");
+                        throw std::logic_error("( In the subpopsize_matrix file (" + simu_param.Nodesize_matrix_filename + "), line " + std::to_string(i + 1) + " does not have a number of elements corresponding to Lattice_Size_X=" + std::to_string(demo_param.Lattice_size[1]) + ". Check settings. I exit. )");
                     }
                     double intpart;
                     for (std::size_t j = 0; j < line_double_vec.size(); ++j)
@@ -1142,10 +1151,10 @@ void check_param()
                     }
 
                     auto line_int_vec = int_vector_parse_by_comma(line_str);
-                    if (line_int_vec.size() != static_cast<std::size_t>(demo_param.Lattice_size[0] + 1))
+                    if (line_int_vec.size() != static_cast<std::size_t>(demo_param.Lattice_size[0]))
                     {
                         throw std::logic_error("( In the subpopsize_matrix file (" + simu_param.Nodesize_matrix_filename + "), line " + std::to_string(i + 1) + " does not have a number of elements corresponding to Lattice_Size_X = " +
-                                               std::to_string(demo_param.Lattice_size[1] + 1) + ". Check settings. I exit. )");
+                                               std::to_string(demo_param.Lattice_size[1]) + ". Check settings. I exit. )");
                     }
                     for (std::size_t j = 0; j < line_int_vec.size(); ++j)
                     {
@@ -1154,30 +1163,39 @@ void check_param()
                 }
             }
         }
+    }
 
-        ////       CHECKING LATTICE AND SAMPLE  PARAMETERS
-        if ((samp_param.Sample_size_per_node.size() > 1) && (static_cast<int>(samp_param.Sample_size_per_node.size()) != (demo_param.Nbr_node_sampled_x * demo_param.Nbr_node_sampled_y)))
-        {
-            throw std::logic_error("( The size of the vector Ind_Per_Node_Sampled is neither 1 (same sample size for each node) nor not equal to Sample_Size_X * Sample_Size_Y (specific sample szie for each node). Check sample settings. I exit. )");
-        }
-        if (demo_param.Min_sample_coord_x < 0 || demo_param.Min_sample_coord_x > demo_param.Lattice_size[0] + 1 ||
-            demo_param.Min_sample_coord_y < 0 || demo_param.Min_sample_coord_y > demo_param.Lattice_size[1] + 1)
-        {
-            throw std::logic_error("( Problem with sample position on the lattice: Min_Sample_Coordinate_X/Y < 1 or > lattice dimensions. Check sample settings. I exit. )");
-        }
+    ////       CHECKING LATTICE AND SAMPLE  PARAMETERS
+    if ((samp_param.Sample_size_per_node.size() > 1) && (static_cast<int>(samp_param.Sample_size_per_node.size()) != (demo_param.Nbr_node_sampled_x * demo_param.Nbr_node_sampled_y)))
+    {
+        throw std::logic_error("( The size of the vector Ind_Per_Node_Sampled is neither 1 (same sample size for each node) nor not equal to Sample_Size_X * Sample_Size_Y (specific sample szie for each node). Check sample settings. I exit. )");
+    }
+    if (demo_param.Min_sample_coord_x < 0 || demo_param.Min_sample_coord_x > demo_param.Lattice_size[0] ||
+        demo_param.Min_sample_coord_y < 0 || demo_param.Min_sample_coord_y > demo_param.Lattice_size[1])
+    {
+        throw std::logic_error("( Problem with sample position on the lattice: Min_Sample_Coordinate_X/Y < 1 or > lattice dimensions. Check sample settings. I exit. )");
+    }
 
-        if (demo_param.Lattice_size[0] < ((demo_param.Nbr_node_sampled_x * demo_param.Void_sample_nodes_X) + demo_param.Min_sample_coord_x - 1))
-        {
-            throw std::logic_error("( Habitat dimension Lattice_Size_X < Sample_Size_X*Void_Sample_Nodes_X + Min_Sample_Coord_X. Check sample settings. I exit. )");
-        }
-        if (demo_param.Lattice_size[1] < ((demo_param.Nbr_node_sampled_y * demo_param.Void_sample_nodes_Y) + demo_param.Min_sample_coord_y - 1))
-        {
-            throw std::logic_error("( Habitat dimension Lattice_Size_Y < Sample_Size_Y*Void_Sample_Nodes_Y + Min_Sample_Coord_Y. Check sample settings. I exit. )");
-        }
-        if (samp_param.Sample_coord_x.size() != samp_param.Sample_coord_x.size())
-        {
-            throw std::logic_error("( Sample_Coordinates_X size (" + std::to_string(samp_param.Sample_coord_x.size()) + ") != Sample_coordinates_y size (" + std::to_string(samp_param.Sample_coord_y.size()) + "). Check sample settings. I exit. )");
-        }
+    if (demo_param.Lattice_size[0] < ((demo_param.Nbr_node_sampled_x * demo_param.Void_sample_nodes_X) + demo_param.Min_sample_coord_x))
+    {
+        throw std::logic_error("( Habitat dimension Lattice_Size_X < Sample_Size_X*Void_Sample_Nodes_X + Min_Sample_Coord_X. Check sample settings. I exit. )");
+    }
+    if (demo_param.Lattice_size[1] < ((demo_param.Nbr_node_sampled_y * demo_param.Void_sample_nodes_Y) + demo_param.Min_sample_coord_y))
+    {
+        throw std::logic_error("( Habitat dimension Lattice_Size_Y < Sample_Size_Y*Void_Sample_Nodes_Y + Min_Sample_Coord_Y. Check sample settings. I exit. )");
+    }
+    if (samp_param.Sample_coord_x.size() != samp_param.Sample_coord_x.size())
+    {
+        throw std::logic_error("( Sample_Coordinates_X size (" + std::to_string(samp_param.Sample_coord_x.size()) + ") != Sample_coordinates_y size (" + std::to_string(samp_param.Sample_coord_y.size()) + "). Check sample settings. I exit. )");
+    }
+
+    if ((demo_param.Disp_dist_max.at(0) < 1) && (demo_param.Nbr_node_sampled_x > 1))
+    {
+        throw std::logic_error("( Dist_max_X need to be > 0 if Sample_Size_X > 1. Check sample settings. I exit. )");
+    }
+    if ((demo_param.Disp_dist_max.at(1) < 1) && (demo_param.Nbr_node_sampled_y > 1))
+    {
+        throw std::logic_error("( Dist_max_Y need to be > 0 if Sample_Size_Y > 1. Check sample settings. I exit. )");
     }
 }
 
@@ -1192,10 +1210,12 @@ void apply_param()
     executed = true;
 
     //Call uniq instance of simu_param_c, demo_param_c, demo_param_c, recomb_param_c, muta_param_c
+    auto &simu_param = singleton_c<simu_param_c>::instance();
     auto &demo_param = singleton_c<demo_param_c>::instance();
     auto &samp_param = singleton_c<samp_param_c>::instance();
     auto &recomb_param = singleton_c<recomb_param_c>::instance();
     auto &muta_param = singleton_c<muta_param_c>::instance();
+    auto &tskit = singleton_c<tskit_struct_c>::instance();
 
     //No dispertion if lattice_size < 2
     for (int dim = 0; dim < 2; ++dim)
@@ -1231,13 +1251,18 @@ void apply_param()
         demo_param.Disp_func.at(0) = fwd_disp_distrib_c::gamma_or_sichel(demo_param, 0);
     }
 
-    demo_param.Population_size_N = demo_param.Pop_size_per_node * (demo_param.Lattice_size[0] + 1) * (demo_param.Lattice_size[1] + 1);
+    demo_param.Population_size_N = demo_param.Pop_size_per_node * (demo_param.Lattice_size[0]) * (demo_param.Lattice_size[1]);
 
     //2.N.mu is for haploid pop
     recomb_param.Scaled_recomb_rate_rho = samp_param.Ploidy * 2.0 * demo_param.Population_size_N * recomb_param.Unscaled_recomb_rate;
     muta_param.Scaled_mut_rate_theta = samp_param.Ploidy * 2.0 * demo_param.Population_size_N * muta_param.Unscaled_mut_rate_mu;
 
     compute_sample_coord(samp_param, demo_param);
+
+    if (simu_param.Tskit_output)
+    {
+        tskit.ini_tskit_struct(samp_param, muta_param, simu_param);
+    }
 }
 
 void compute_sample_coord(samp_param_c &samp_param, demo_param_c const &demo_param)
@@ -1366,7 +1391,7 @@ void output_screen_info(std::string const &version, simu_param_c const &simu_par
     {
         std::cout << " diploid individuals " << std::endl;
     }
-    std::cout << "evolving on a " << demo_param.Lattice_size[0] + 1 << " x " << demo_param.Lattice_size[1] + 1 << " lattice";
+    std::cout << "evolving on a " << demo_param.Lattice_size[0] << " x " << demo_param.Lattice_size[1] << " lattice";
     if (simu_param.Nodesize_matrix)
     {
         std::cout << std::endl
@@ -1381,7 +1406,7 @@ void output_screen_info(std::string const &version, simu_param_c const &simu_par
     {
         std::cout << "Custom migration matrix given in the file " << simu_param.Migration_matrix_filename << "." << std::endl;
     }
-    std::cout << "Dispersal settings are summarized in the "<< simu_param.Generic_data_filename + simu_param.Param_summary_filename <<" file. " << std::endl;
+    std::cout << "Dispersal settings are summarized in the " << simu_param.Generic_data_filename + simu_param.Param_summary_filename << " file. " << std::endl;
     std::cout << "============================================================================\n"
               << std::endl;
 }

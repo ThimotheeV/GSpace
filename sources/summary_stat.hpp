@@ -5,7 +5,7 @@
 #include "calc_stat.hpp"
 #include "calc_stat_dl.hpp"
 
-using sample_mutated_state_type = std::vector<std::map<int, int>>;
+using sample_mutated_state_type = std::vector<std::vector<std::pair<const int, const int>>>;
 
 std::vector<int> reconstitution_full_int_seq_indiv(std::vector<int> ancestry_seq, std::vector<std::pair<int, int>> const &indiv_mut_seq);
 std::string reconstitution_full_nucl_seq_indiv(std::vector<int> ancestry_seq, std::vector<std::pair<int, int>> const &indiv_mut_seq);
@@ -85,12 +85,15 @@ struct info_collector_c
     bool Debug = false;
     bool Check_tree_bool = false;
     bool Clock = false;
+
     double time_coa{0};
     double time_recomb{0};
     double time_mig{0};
     double time_construct_tree{0};
     double time_mutation{0};
     double time_simulation{0};
+    double time_before_simulation{0};
+    double time_after_simulation{0};
 
     bool Stats{false};
     bool Iterative_stats{false};
@@ -101,18 +104,14 @@ struct info_collector_c
     bool Prob_id_1_loc_Qr{false};
     bool Prob_id_1_loc_Qwi_wd_bd{false};
 
-    bool Coa_times{false};
+    bool MRCA_record{false};
 
     bool Effective_disp{false};
     //bool Check_disp_distrib{false}; // not used anymore, may be reused if we don't want to store and output dispersal distributions/Migration matrix
     bool Print_migration_matrix_bool{false};
 
     std::vector<double> MRCA_time;
-    std::array<double, 2> MRCA_times_cumul_mean_var{0, 0};
-
-    std::vector<double> Gen_coa_time;
-    std::array<double, 2> Gen_coa_cumul_mean_var{0, 0};
-    std::vector<int> Nbr_coa;
+    std::array<double, 2> MRCA_record_cumul_mean_var{0, 0};
 
     std::array<double, 3> Nbr_depl_0_1_tot{0, 0, 0};
     std::vector<std::vector<int>> Emp_cumul_axial_disp;
@@ -137,10 +136,41 @@ struct output_stat_c
     Prob_id_1_2_loc_res_c Prob_id_1_2_loc_res;
     Prob_id_1_loc_Qr_res_c Prob_id_1_loc_Qr_res;
     Prob_id_1_loc_Qwi_wd_bd_res_c Prob_id_1_loc_Qwi_wd_bd_res;
-    
+
     data_plane_vec_c Data_plane_vec;
 };
 
 //tuple(mean, var, pond)
 std::array<double, 2>
 calc_cumul_mean_var(std::array<double, 2> cumul_mean_var_pond, std::vector<double> const &vec_value, int pond);
+
+#include "tables.h"
+#include "core.h"
+#include "trees.h"
+#include "genotypes.h"
+#include "convert.h"
+#include "stats.h"
+#include "haplotype_matching.h"
+#include "settings.hpp"
+#include "coalescence_table.hpp"
+
+struct tskit_struct_c
+{
+    void ini_tskit_struct(samp_param_c const &samp_param, muta_param_c const &muta_param, simu_param_c const &simu_param);
+    void add_new_chrom(coa_table_c coa_table);
+    void add_new_mut(int site_num, int index_node, std::string state);
+    void sort_and_output(std::string const &path_to_file);
+
+    bool Tskit_output = false;
+    bool Approx_time = false;
+
+    int Sample_size = 1;
+    int Ploidy = 1;
+    int Sequence_length = 1;
+    int Chr_num = 0;
+
+    //WARNING : Valid for just last chrom
+    std::map<int, tsk_size_t> Index_in_tables_nodes;
+    std::map<tsk_id_t, tsk_id_t> Tsk_parent_mut;
+    tsk_table_collection_t Tables;
+};

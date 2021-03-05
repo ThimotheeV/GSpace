@@ -212,6 +212,10 @@ void alg_coa_c::decrement_overlaps(obj_mem_manag_c<seg> &pool_seg, std::map<int,
 void alg_coa_c::update_segs(obj_mem_manag_c<seg> &pool_seg, fenwick_tree_c &cumul_nbr_brkpt_per_seg, coa_table_c &coa_table, double time_t, int gen)
 {
     //parent_node X_prev_seg or Y_choosen_seg is already a parent just need to update coalescence table.
+    // if(U_ident_node >= 193)
+    // {
+    //     std::cout<<L_left_brkpt<<", "<<R_right_brkpt<<" "<<U_ident_node<<" "<<X_prev_seg->U_ident_node<<" "<<Y_choosen_seg->U_ident_node<<" "<<gen<<std::endl;
+    // }
     coa_table.set_coa_event(L_left_brkpt, R_right_brkpt, U_ident_node, {X_prev_seg->U_ident_node, Y_choosen_seg->U_ident_node}, time_t, gen);
 
     //If area go to the end of the X_prev_seg replace it by its next one. Delete X_prev_seg of simulation.

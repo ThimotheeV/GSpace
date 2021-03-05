@@ -7,31 +7,31 @@
 
 namespace unit_test
 {
-struct CoalescenceTableTest
-{
-    // unit_test::CoalescenceTableTest() {}
-    // ~unit_test::CoalescenceTableTest() {}
-
-    static std::vector<coa_event_t> &getCoalescenceTable(coa_table_c &c)
+    struct CoalescenceTableTest
     {
-        return c.Coalescence_table;
-    }
+        // unit_test::CoalescenceTableTest() {}
+        // ~unit_test::CoalescenceTableTest() {}
 
-    static std::vector<std::tuple<std::vector<int>, double, int, int>> &getAncestryTree(tree_gen_c &tg)
-    {
-        return tg.Ancestry_tree;
-    }
+        static std::vector<coa_event_t> &getCoalescenceTable(coa_table_c &c)
+        {
+            return c.Coalescence_table;
+        }
 
-    static coa_table_c sort_table_I(coa_table_c &c)
-    {
-        return tree_gen_c::sort_table_I(c);
-    }
+        static std::vector<std::tuple<std::vector<int>, double, int>> &getAncestryTree(tree_gen_c &tg)
+        {
+            return tg.Ancestry_tree;
+        }
 
-    static coa_table_c sort_table_R(coa_table_c &c)
-    {
-        return tree_gen_c::sort_table_R(c);
-    }
-};
+        static coa_table_c sort_table_I(coa_table_c &c)
+        {
+            return tree_gen_c::sort_table_I(c);
+        }
+
+        static coa_table_c sort_table_R(coa_table_c &c)
+        {
+            return tree_gen_c::sort_table_R(c);
+        }
+    };
 } // namespace unit_test
 
 //Caution : exemple are the same as the article of Kellerher but with all the node num  -1
@@ -143,6 +143,9 @@ TEST_CASE_METHOD(unit_test::CoalescenceTableTest, "coalescence_table_test")
 
         table_event.set_coa_event(0, 1, 4, {3, 2}, 0, 1);
         table_event.set_coa_event(0, 1, 5, {4, 1}, 0, 1);
+
+        table_event.group_multi_coa(0);
+
         table_event.set_coa_event(0, 1, 6, {5, 0}, 0, 1);
 
         table_event.group_multi_coa(0);
@@ -237,8 +240,17 @@ TEST_CASE_METHOD(unit_test::CoalescenceTableTest, "coalescence_table_test")
         table_event.set_coa_event(0, 1, 100, {0, 2}, 0, 1);
         table_event.set_coa_event(0, 1, 101, {100, 3}, 0, 1);
         table_event.set_coa_event(0, 1, 102, {101, 5}, 0, 1);
+
+        table_event.group_multi_coa(0);
+
         table_event.set_coa_event(0, 1, 103, {102, 7}, 0, 1);
+
+        table_event.group_multi_coa(0);
+
         table_event.set_coa_event(0, 1, 104, {103, 83}, 0, 1);
+
+        table_event.group_multi_coa(0);
+
         table_event.set_coa_event(0, 1, 105, {4, 94}, 0, 1);
         table_event.set_coa_event(0, 1, 106, {104, 99}, 0, 1);
 
@@ -274,6 +286,11 @@ TEST_CASE_METHOD(unit_test::CoalescenceTableTest, "coalescence_table_test")
 
         table_event.set_coa_event(0, 3, 4, {2, 3}, 0.090, 1);
         table_event.set_coa_event(0, 3, 5, {1, 4}, 0.090, 1);
+
+        table_event.group_multi_coa(0);
+
+        REQUIRE(table_event.size() == 1);
+
         table_event.set_coa_event(2, 3, 6, {0, 5}, 0.090, 1);
 
         table_event.group_multi_coa(0);
@@ -306,6 +323,7 @@ TEST_CASE_METHOD(unit_test::CoalescenceTableTest, "coalescence_table_test")
 
         table_event.set_coa_event(0, 3, 5, {1, 4}, 0.077, 0);
         table_event.set_coa_event(2, 3, 6, {0, 5}, 0.077, 0);
+        
         table_event.set_coa_event(5, 9, 4, {2, 1}, 0.090, 1);
         table_event.set_coa_event(6, 8, 5, {4, 3}, 0.090, 1);
         table_event.set_coa_event(4, 5, 6, {1, 0}, 0.090, 1);
@@ -353,6 +371,195 @@ TEST_CASE_METHOD(unit_test::CoalescenceTableTest, "coalescence_table_test")
         REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[6]))[1] == 0);
     }
 
+    /************EDGES CASES******************/
+
+    SECTION("NO_group_multi_coalescance_table")
+    {
+        coa_table_c table_event;
+
+        table_event.set_coa_event(0, 3, 12, {1, 4}, 0.077, 0);
+        table_event.set_coa_event(2, 3, 13, {0, 5}, 0.077, 0);
+        table_event.set_coa_event(5, 9, 14, {2, 1}, 0.090, 1);
+        table_event.set_coa_event(6, 8, 15, {4, 3}, 0.090, 1);
+        table_event.set_coa_event(4, 5, 16, {1, 0}, 0.090, 1);
+        table_event.set_coa_event(5, 6, 17, {4, 0}, 0.090, 1);
+        table_event.set_coa_event(6, 8, 18, {5, 0}, 0.090, 1);
+        table_event.set_coa_event(8, 9, 19, {4, 0}, 0.090, 1);
+        table_event.set_coa_event(9, 10, 20, {2, 0}, 0.090, 1);
+
+        table_event.group_multi_coa(2);
+
+        REQUIRE(table_event.size() == 9);
+    }
+
+    SECTION("group_multi_coa_strange_case_coalescance_table")
+    {
+        coa_table_c table_event;
+
+        table_event.set_coa_event(0, 10, 15, {11, 12}, 0, 25);
+        table_event.set_coa_event(3, 6, 16, {15, 13}, 0, 25);
+        table_event.set_coa_event(6, 9, 16, {15, 14}, 0, 25);
+
+        table_event.group_multi_coa(0);
+
+        REQUIRE(table_event.size() == 4);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[0]) == 0);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[0]) == 3);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[0]) == 15);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[0]))[0] == 11);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[0]))[1] == 12);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[1]) == 3);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[1]) == 6);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[1]) == 16);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[0] == 13);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[1] == 11);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[2] == 12);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[2]) == 6);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[2]) == 9);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[2]) == 16);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[2]))[0] == 14);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[2]))[1] == 11);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[2]))[2] == 12);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[3]) == 9);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[3]) == 10);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[3]) == 15);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[3]))[0] == 11);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[3]))[1] == 12);
+    }
+
+    SECTION("group_multi_coa_strange_case_II_coalescance_table")
+    {
+        coa_table_c table_event;
+
+        table_event.set_coa_event(2, 4, 57, {3, 17}, 0, 19);
+        table_event.set_coa_event(2, 3, 58, {57, 9}, 0, 19);
+
+        table_event.group_multi_coa(0);
+
+        REQUIRE(table_event.size() == 2);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[0]) == 2);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[0]) == 3);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[0]) == 58);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[0]))[0] == 9);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[0]))[1] == 3);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[0]))[2] == 17);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[1]) == 3);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[1]) == 4);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[1]) == 57);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[0] == 3);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[1] == 17);
+    }
+
+    //Special case du to reshape_segs in multi coa process.
+    //Not a problem for GSpace simu but need be handle in algorithms, quick patch in add_new_chrom
+    SECTION("group_multi_coa_strange_case_III_coalescance_table")
+    {
+        coa_table_c table_event;
+
+        table_event.set_coa_event(4, 5, 1008, {120, 554}, 0, 1);
+        table_event.set_coa_event(5, 6, 1008, {554, 120, 200}, 0, 1);
+        table_event.set_coa_event(4, 6, 1009, {1008, 791}, 0, 1);
+
+        table_event.group_multi_coa(0);
+
+        REQUIRE(table_event.size() == 2);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[0]) == 4);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[0]) == 5);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[0]) == 1009);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[0]))[0] == 791);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[0]))[1] == 120);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[0]))[2] == 554);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[1]) == 5);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[1]) == 6);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[1]) == 1009);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[0] == 791);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[1] == 554);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[2] == 120);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[3] == 200);
+    }
+
+    // -.-
+    SECTION("group_multi_coa_strange_case_IV_coalescance_table")
+    {
+        coa_table_c table_event;
+
+        table_event.set_coa_event(6, 8, 1298, {1191, 967}, 0, 3);
+        table_event.set_coa_event(8, 9, 1298, {782, 967}, 0, 3);
+        table_event.set_coa_event(7, 9, 1299, {1298, 778}, 0, 3);
+
+        table_event.group_multi_coa(0);
+
+        REQUIRE(table_event.size() == 3);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[0]) == 6);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[0]) == 7);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[0]) == 1298);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[0]))[0] == 1191);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[0]))[1] == 967);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[1]) == 7);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[1]) == 8);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[1]) == 1299);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[0] == 778);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[1] == 1191);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[2] == 967);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[2]) == 8);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[2]) == 9);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[2]) == 1299);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[2]))[0] == 778);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[2]))[1] == 782);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[2]))[2] == 967);
+    }
+
+    // HAAAAAAAAAAAAAAAAAAAAA !!!!!!!!!!!!!!!!!!!!!
+    SECTION("group_multi_coa_strange_case_V_coalescance_table")
+    {
+        coa_table_c table_event;
+
+        table_event.set_coa_event(0, 2, 2254, {1565, 177}, 0, 6);
+        table_event.set_coa_event(2, 4, 2254, {334, 177}, 0, 6);
+        table_event.set_coa_event(1, 3, 2256, {2254, 936}, 0, 6);
+
+        table_event.group_multi_coa(0);
+
+        REQUIRE(table_event.size() == 4);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[0]) == 0);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[0]) == 1);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[0]) == 2254);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[0]))[0] == 1565);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[0]))[1] == 177);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[1]) == 1);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[1]) == 2);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[1]) == 2256);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[0] == 936);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[1] == 1565);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[1]))[2] == 177);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[2]) == 2);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[2]) == 3);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[2]) == 2256);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[2]))[0] == 936);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[2]))[1] == 334);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[2]))[2] == 177);
+
+        REQUIRE(coa_table_c::get_left_brkpt_l(table_event.get_coa_table()[3]) == 3);
+        REQUIRE(coa_table_c::get_right_brkpt_r(table_event.get_coa_table()[3]) == 4);
+        REQUIRE(coa_table_c::get_num_node_u(table_event.get_coa_table()[3]) == 2254);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[3]))[0] == 334);
+        REQUIRE((coa_table_c::get_childs_node_c(table_event.get_coa_table()[3]))[1] == 177);
+    }
+
     /**************************************************************/
     /*                 Tree Generator                             */
     /**************************************************************/
@@ -376,33 +583,18 @@ TEST_CASE_METHOD(unit_test::CoalescenceTableTest, "coalescence_table_test")
         REQUIRE(generator.Leaf_number == 4);
     }
 
-    SECTION("nbr_leaf_for_node")
-    {
-        coa_table_c table_event;
-
-        tree_gen_c generator(table_event, 9, 4);
-
-        getAncestryTree(generator)[5] = std::make_tuple(std::vector<int>(1, 3), 0, 0, 2);
-        getAncestryTree(generator)[6] = std::make_tuple(std::vector<int>(0, 5), 0, 0, 3);
-        getAncestryTree(generator)[8] = std::make_tuple(std::vector<int>(2, 6), 0, 0, 4);
-
-        REQUIRE(generator.nbr_leaf_for_node({1, 3}) == 2);
-        REQUIRE(generator.nbr_leaf_for_node({0, 5}) == 3);
-        REQUIRE(generator.nbr_leaf_for_node({2, 6}) == 4);
-    }
-
     SECTION("find_MRCA")
     {
-        std::vector<std::tuple<std::vector<int>, double, int, int>> ancestry_tree(9);
-        ancestry_tree[0] = std::make_tuple(std::vector<int>(), 0, 0, 1);
-        ancestry_tree[1] = std::make_tuple(std::vector<int>(), 0, 0, 1);
-        ancestry_tree[2] = std::make_tuple(std::vector<int>(), 0, 0, 1);
-        ancestry_tree[3] = std::make_tuple(std::vector<int>(), 0, 0, 1);
-        ancestry_tree[4] = std::make_tuple(std::vector<int>{0, 1}, 1, -1, 2);
-        ancestry_tree[5] = std::make_tuple(std::vector<int>{2, 3}, 1, -1, 2);
-        ancestry_tree[6] = std::make_tuple(std::vector<int>(), 0, 0, 1);
-        ancestry_tree[7] = std::make_tuple(std::vector<int>{4, 5}, 2, -1, 4);
-        ancestry_tree[8] = std::make_tuple(std::vector<int>(), 0, 0, 1);
+        std::vector<std::tuple<std::vector<int>, double, int>> ancestry_tree(9);
+        ancestry_tree[0] = std::make_tuple(std::vector<int>(), 0, 0);
+        ancestry_tree[1] = std::make_tuple(std::vector<int>(), 0, 0);
+        ancestry_tree[2] = std::make_tuple(std::vector<int>(), 0, 0);
+        ancestry_tree[3] = std::make_tuple(std::vector<int>(), 0, 0);
+        ancestry_tree[4] = std::make_tuple(std::vector<int>{0, 1}, 1, -1);
+        ancestry_tree[5] = std::make_tuple(std::vector<int>{2, 3}, 1, -1);
+        ancestry_tree[6] = std::make_tuple(std::vector<int>(), 0, 0);
+        ancestry_tree[7] = std::make_tuple(std::vector<int>{4, 5}, 2, -1);
+        ancestry_tree[8] = std::make_tuple(std::vector<int>(), 0, 0);
 
         auto num_node_MRCA = find_MRCA(ancestry_tree);
 
@@ -431,17 +623,14 @@ TEST_CASE_METHOD(unit_test::CoalescenceTableTest, "coalescence_table_test")
 
         REQUIRE((std::get<0>(tree[0])).empty());
         REQUIRE(std::get<1>(tree[0]) == 0);
-        REQUIRE(std::get<3>(tree[0]) == 1);
 
         REQUIRE((std::get<0>(tree[5]))[0] == 1);
         REQUIRE((std::get<0>(tree[5]))[1] == 3);
         REQUIRE(std::get<1>(tree[5]) == 0.090);
-        REQUIRE(std::get<3>(tree[5]) == 2);
 
         REQUIRE((std::get<0>(tree[8]))[0] == 2);
         REQUIRE((std::get<0>(tree[8]))[1] == 6);
         REQUIRE(std::get<1>(tree[8]) == 0.253);
-        REQUIRE(std::get<3>(tree[8]) == 4);
     }
 
     SECTION("tree_generator_next_two_three_tree_case")
@@ -470,16 +659,13 @@ TEST_CASE_METHOD(unit_test::CoalescenceTableTest, "coalescence_table_test")
 
         REQUIRE((std::get<0>(tree2[3])).empty());
         REQUIRE(std::get<1>(tree2[3]) == 0);
-        REQUIRE(std::get<3>(tree2[3]) == 1);
 
         REQUIRE((std::get<0>(tree2[5]))[0] == 1);
         REQUIRE((std::get<0>(tree2[5]))[1] == 4);
         REQUIRE(std::get<1>(tree2[5]) == 0.090);
-        REQUIRE(std::get<3>(tree2[5]) == 3);
 
         REQUIRE((std::get<0>(tree2[8])).empty());
         REQUIRE(std::get<1>(tree2[8]) == 0);
-        REQUIRE(std::get<3>(tree2[8]) == 0);
     }
 
     SECTION("tree_generator_next_tree_three_tree_case")
@@ -509,16 +695,13 @@ TEST_CASE_METHOD(unit_test::CoalescenceTableTest, "coalescence_table_test")
 
         REQUIRE((std::get<0>(tree2[3])).empty());
         REQUIRE(std::get<1>(tree2[3]) == 0);
-        REQUIRE(std::get<3>(tree2[3]) == 1);
 
         REQUIRE((std::get<0>(tree2[6])).empty());
         REQUIRE(std::get<1>(tree2[6]) == 0);
-        REQUIRE(std::get<3>(tree2[6]) == 0);
 
         REQUIRE((std::get<0>(tree2[7]))[0] == 0);
         REQUIRE((std::get<0>(tree2[7]))[1] == 5);
         REQUIRE(std::get<1>(tree2[7]) == 0.202);
-        REQUIRE(std::get<3>(tree2[7]) == 4);
     }
 
     //Kellerher exemple with sample 4 at begin and 5 at end
@@ -549,27 +732,22 @@ TEST_CASE_METHOD(unit_test::CoalescenceTableTest, "coalescence_table_test")
 
         REQUIRE((std::get<0>(tree2[3])).empty());
         REQUIRE(std::get<1>(tree2[3]) == 0);
-        REQUIRE(std::get<3>(tree2[3]) == 1);
 
         REQUIRE((std::get<0>(tree2[6]))[0] == 3);
         REQUIRE((std::get<0>(tree2[6]))[1] == 4);
         REQUIRE((std::get<0>(tree2[6]))[2] == 5);
         REQUIRE(std::get<1>(tree2[6]) == 0.071);
-        REQUIRE(std::get<3>(tree2[6]) == 3);
 
         REQUIRE((std::get<0>(tree2[7]))[0] == 1);
         REQUIRE((std::get<0>(tree2[7]))[1] == 2);
         REQUIRE((std::get<0>(tree2[7]))[2] == 6);
         REQUIRE(std::get<1>(tree2[7]) == 0.090);
-        REQUIRE(std::get<3>(tree2[7]) == 5);
 
         REQUIRE((std::get<0>(tree2[8])).empty());
         REQUIRE(std::get<1>(tree2[8]) == 0);
-        REQUIRE(std::get<3>(tree2[8]) == 0);
 
         REQUIRE((std::get<0>(tree2[9]))[0] == 0);
         REQUIRE((std::get<0>(tree2[9]))[1] == 7);
         REQUIRE(std::get<1>(tree2[9]) == 0.202);
-        REQUIRE(std::get<3>(tree2[9]) == 6);
     }
 }

@@ -57,7 +57,7 @@ TEST_CASE("coa_algo_c_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Population_size_N = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -103,7 +103,7 @@ TEST_CASE("coa_algo_c_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Population_size_N = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -152,7 +152,7 @@ TEST_CASE("coa_algo_c_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Population_size_N = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -202,7 +202,7 @@ TEST_CASE("coa_algo_c_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Population_size_N = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -249,7 +249,7 @@ TEST_CASE("coa_algo_c_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Population_size_N = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -301,7 +301,7 @@ TEST_CASE("coa_algo_c_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Population_size_N = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -352,7 +352,7 @@ TEST_CASE("coa_algo_c_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Population_size_N = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -406,7 +406,7 @@ TEST_CASE("coa_algo_c_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Population_size_N = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -467,7 +467,7 @@ TEST_CASE("coa_algo_c_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Population_size_N = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -511,7 +511,7 @@ TEST_CASE("coa_algo_c_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Population_size_N = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;
@@ -567,7 +567,7 @@ TEST_CASE("coa_algo_c_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Population_size_N = samp_param.n_total_sample_size;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0.2;

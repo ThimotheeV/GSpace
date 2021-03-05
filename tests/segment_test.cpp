@@ -481,7 +481,7 @@ TEST_CASE("indiv_stock_intergrate_segment_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {0, 0};
+        demo_param.Lattice_size = {1, 1};
         demo_param.Pop_size_per_node = 10;
         demo_param.Disp_dist_max = {0, 0};
         demo_param.Proba_migr = 0;

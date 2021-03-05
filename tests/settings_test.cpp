@@ -51,7 +51,7 @@ TEST_CASE("settings_test")
         REQUIRE(simu_param.Setting_filename == "GSpaceSettings.txt");
         REQUIRE(simu_param.Output_dir == ".");
 
-        std::array<int, 2> temp = {2, 2};
+        std::array<int, 2> temp = {3, 3};
         REQUIRE(demo_param.Lattice_size == temp);
         temp = {1, 1};
         REQUIRE(demo_param.Disp_dist_max == temp);
@@ -217,11 +217,13 @@ TEST_CASE("check_ancestry_settings_test")
 
     SECTION("allelic 0 case")
     {
-        const auto file_str = read_file("IbdSettings.txt");
-        parser_str(file_str);
 
         auto &samp_param = singleton_c<samp_param_c>::instance();
         auto &muta_param = singleton_c<muta_param_c>::instance();
+        samp_param.Sample_size_per_node.clear();
+
+        const auto file_str = read_file("IbdSettings.txt");
+        parser_str(file_str);
 
         samp_param.Chr_nbr = 2;
         samp_param.Sequence_length = 2;
@@ -239,11 +241,13 @@ TEST_CASE("check_ancestry_settings_test")
 
     SECTION("allelic 0 and values case")
     {
-        const auto file_str = read_file("IbdSettings.txt");
-        parser_str(file_str);
 
         auto &samp_param = singleton_c<samp_param_c>::instance();
         auto &muta_param = singleton_c<muta_param_c>::instance();
+        samp_param.Sample_size_per_node.clear();
+
+        const auto file_str = read_file("IbdSettings.txt");
+        parser_str(file_str);
 
         samp_param.Chr_nbr = 2;
         samp_param.Sequence_length = 2;
@@ -261,11 +265,12 @@ TEST_CASE("check_ancestry_settings_test")
 
     SECTION("allelic with 0 in values case")
     {
-        const auto file_str = read_file("IbdSettings.txt");
-        parser_str(file_str);
-
         auto &samp_param = singleton_c<samp_param_c>::instance();
         auto &muta_param = singleton_c<muta_param_c>::instance();
+        samp_param.Sample_size_per_node.clear();
+
+        const auto file_str = read_file("IbdSettings.txt");
+        parser_str(file_str);
 
         samp_param.Chr_nbr = 2;
         samp_param.Sequence_length = 2;
@@ -283,11 +288,12 @@ TEST_CASE("check_ancestry_settings_test")
 
     SECTION("allelic values case")
     {
-        const auto file_str = read_file("IbdSettings.txt");
-        parser_str(file_str);
-
         auto &samp_param = singleton_c<samp_param_c>::instance();
         auto &muta_param = singleton_c<muta_param_c>::instance();
+        samp_param.Sample_size_per_node.clear();
+
+        const auto file_str = read_file("IbdSettings.txt");
+        parser_str(file_str);
 
         samp_param.Chr_nbr = 2;
         samp_param.Sequence_length = 2;
@@ -305,11 +311,13 @@ TEST_CASE("check_ancestry_settings_test")
 
     SECTION("nucleotidic 0 case")
     {
-        const auto file_str = read_file("IbdSettings.txt");
-        parser_str(file_str);
 
         auto &samp_param = singleton_c<samp_param_c>::instance();
         auto &muta_param = singleton_c<muta_param_c>::instance();
+        samp_param.Sample_size_per_node.clear();
+
+        const auto file_str = read_file("IbdSettings.txt");
+        parser_str(file_str);
 
         samp_param.Chr_nbr = 2;
         samp_param.Sequence_length = 2;
@@ -326,11 +334,12 @@ TEST_CASE("check_ancestry_settings_test")
 
     SECTION("nucleotidic 0 and values case")
     {
-        const auto file_str = read_file("IbdSettings.txt");
-        parser_str(file_str);
-
         auto &samp_param = singleton_c<samp_param_c>::instance();
         auto &muta_param = singleton_c<muta_param_c>::instance();
+        samp_param.Sample_size_per_node.clear();
+
+        const auto file_str = read_file("IbdSettings.txt");
+        parser_str(file_str);
 
         samp_param.Chr_nbr = 2;
         samp_param.Sequence_length = 2;
@@ -347,11 +356,12 @@ TEST_CASE("check_ancestry_settings_test")
 
     SECTION("nucleotidic with 0 in values case")
     {
-        const auto file_str = read_file("IbdSettings.txt");
-        parser_str(file_str);
-
         auto &samp_param = singleton_c<samp_param_c>::instance();
         auto &muta_param = singleton_c<muta_param_c>::instance();
+        samp_param.Sample_size_per_node.clear();
+
+        const auto file_str = read_file("IbdSettings.txt");
+        parser_str(file_str);
 
         samp_param.Chr_nbr = 2;
         samp_param.Sequence_length = 2;
@@ -370,11 +380,12 @@ TEST_CASE("check_ancestry_settings_test")
 
     SECTION("nucleotidic values case")
     {
-        const auto file_str = read_file("IbdSettings.txt");
-        parser_str(file_str);
-
         auto &samp_param = singleton_c<samp_param_c>::instance();
         auto &muta_param = singleton_c<muta_param_c>::instance();
+        samp_param.Sample_size_per_node.clear();
+
+        const auto file_str = read_file("IbdSettings.txt");
+        parser_str(file_str);
 
         samp_param.Chr_nbr = 2;
         samp_param.Sequence_length = 2;

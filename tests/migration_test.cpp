@@ -85,7 +85,7 @@ TEST_CASE("distri_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {10, 10};
+        demo_param.Lattice_size = {11, 11};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {5, 2};
         demo_param.Proba_migr = 0.2;
@@ -144,7 +144,7 @@ TEST_CASE("distri_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::circular;
-        demo_param.Lattice_size = {0, 9};
+        demo_param.Lattice_size = {1, 10};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 49};
         demo_param.Proba_migr = 0.6;
@@ -206,7 +206,7 @@ TEST_CASE("distri_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Disp_dist_max = {48, 0};
-        demo_param.Lattice_size = {200, 0};
+        demo_param.Lattice_size = {200, 1};
         demo_param.Proba_migr = 0.1;
         demo_param.Gamma_sichel_param = -2.15;
         demo_param.Xi_sichel_param = 20.72;
@@ -308,7 +308,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {10, 10};
+        demo_param.Lattice_size = {11, 11};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {5, 5};
         demo_param.Proba_migr = 0.2;
@@ -341,7 +341,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {10, 10};
+        demo_param.Lattice_size = {11, 11};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {5, 5};
         demo_param.Proba_migr = 0.2;
@@ -367,7 +367,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {10, 10};
+        demo_param.Lattice_size = {11, 11};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {5, 5};
         demo_param.Proba_migr = 0.2;
@@ -396,7 +396,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {10, 10};
+        demo_param.Lattice_size = {11, 11};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {5, 5};
         demo_param.Proba_migr = 0.2;
@@ -427,7 +427,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {2, 1};
+        demo_param.Lattice_size = {3, 2};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -451,7 +451,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {2, 2};
         demo_param.Proba_migr = 0.2;
@@ -487,7 +487,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -520,7 +520,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {4, 4};
         demo_param.Proba_migr = 0.2;
@@ -550,7 +550,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::circular;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -580,7 +580,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::circular;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {4, 4};
         demo_param.Proba_migr = 0.2;
@@ -613,7 +613,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {10, 10};
+        demo_param.Lattice_size = {11, 11};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {20, 20};
         demo_param.Proba_migr = 0.8;
@@ -648,7 +648,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {10, 10};
+        demo_param.Lattice_size = {11, 11};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {10, 10};
         demo_param.Proba_migr = 0.2;
@@ -682,7 +682,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::circular;
-        demo_param.Lattice_size = {10, 10};
+        demo_param.Lattice_size = {11, 11};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {23, 23};
         demo_param.Proba_migr = 0.2;
@@ -716,7 +716,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -784,7 +784,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -853,7 +853,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::circular;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -956,7 +956,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -1021,7 +1021,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {0, 1};
+        demo_param.Lattice_size = {1, 2};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 1};
         demo_param.Proba_migr = 0.2;
@@ -1078,7 +1078,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {0, 9};
+        demo_param.Lattice_size = {1, 10};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 9};
         demo_param.Proba_migr = 0.45;
@@ -1142,7 +1142,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {0, 10};
+        demo_param.Lattice_size = {1, 11};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {0, 10};
         demo_param.Proba_migr = 0.8;
@@ -1212,7 +1212,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -1271,7 +1271,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {10, 10};
+        demo_param.Lattice_size = {11, 11};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -1313,7 +1313,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::absorbing;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -1372,7 +1372,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {10, 10};
+        demo_param.Lattice_size = {11, 11};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -1415,7 +1415,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::reflecting;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -1475,7 +1475,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
     {
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::circular;
-        demo_param.Lattice_size = {10, 10};
+        demo_param.Lattice_size = {11, 11};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -1523,7 +1523,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::circular;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -1591,7 +1591,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::circular;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.4;
@@ -1657,7 +1657,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::circular;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -1696,7 +1696,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::circular;
-        demo_param.Lattice_size = {2, 2};
+        demo_param.Lattice_size = {3, 3};
         demo_param.Pop_size_per_node = 1;
         demo_param.Disp_dist_max = {1, 1};
         demo_param.Proba_migr = 0.2;
@@ -1736,7 +1736,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::circular;
-        demo_param.Lattice_size = {1, 1};
+        demo_param.Lattice_size = {2, 2};
         demo_param.Pop_size_per_node = 1;
 
         int size = 100000;
@@ -1788,7 +1788,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::circular;
-        demo_param.Lattice_size = {1, 1};
+        demo_param.Lattice_size = {2, 2};
         demo_param.Pop_size_per_node = 1;
 
         int size = 100000;
@@ -1840,7 +1840,7 @@ TEST_CASE("lattice_&_extend_lattice_test")
 
         auto &demo_param = singleton_c<demo_param_c>::instance();
         demo_param.Edge_effects = edge_effect_enum::circular;
-        demo_param.Lattice_size = {1, 1};
+        demo_param.Lattice_size = {2, 2};
         demo_param.Pop_size_per_node = 1;
 
         int size = 100000;

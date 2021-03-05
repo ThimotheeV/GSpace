@@ -56,10 +56,16 @@ int main(int argc, char *argv[])
     output_screen_info(version, simu_param, samp_param, demo_param, muta_param, recomb_param);
 
     auto &info_collect = singleton_c<info_collector_c>::instance();
-    info_collect.Nbr_coa.resize(100 * demo_param.Population_size_N); //TODO : RL bizarre ces valeures (plutot max coa nbr = nbreSite*SampleSize(SampleSize-1))
     write_beforerun_param_settings_summary(simu_param.Generic_data_filename + simu_param.Param_summary_filename, version, simu_param, samp_param, demo_param, muta_param, recomb_param);
 
     output_stat_c output_stat;
+    
+    if (info_collect.Clock)
+    {
+        auto fin = std::chrono::high_resolution_clock::now();
+        info_collect.time_before_simulation += (std::chrono::duration_cast<std::chrono::nanoseconds>(fin - debut).count() * 0.000000001);
+    }
+
 
     for (int rep = 0; rep < simu_param.Repetition_nbr; ++rep)
     {
@@ -67,26 +73,28 @@ int main(int argc, char *argv[])
         sample_simulator(output_stat, rep);
     }
 
+    std::chrono::time_point<std::chrono::high_resolution_clock> debut_after_simulation;
+    if (info_collect.Clock)
+    {
+        debut_after_simulation = std::chrono::high_resolution_clock::now();
+    }
+
+    
     write_afterrun_param_settings_summary(simu_param.Generic_data_filename + simu_param.Param_summary_filename, simu_param, samp_param, demo_param);
 
     std::cout << std::endl;
 
-    // std::cout << "    ************    " << std::endl;
-    // std::cout << "Portion de migr = 0 : " << info_collect.Nbr_depl_0_1_tot[0] / info_collect.Nbr_depl_0_1_tot[2] << std::endl;
-    // std::cout << "Portion de migr = 1 : " << info_collect.Nbr_depl_0_1_tot[1] / info_collect.Nbr_depl_0_1_tot[2] << std::endl;
-    // std::cout << "        " << std::endl;
-
-    if (info_collect.Coa_times)
+    if (info_collect.MRCA_record)
     {
         coa_tree_metrics_c coa_tree_metric;
         coa_tree_metric.calcul_coa_tree_metrics(simu_param.Continuous_time_approxim, samp_param.Ploidy, demo_param.Population_size_N, samp_param.n_total_sample_size);
 
         std::cout << "    ************    " << std::endl;
         std::cout << "Theo MRCA mean : " << coa_tree_metric.Theo_MRCA_mean << std::endl;
-        std::cout << "MRCA mean : " << info_collect.MRCA_times_cumul_mean_var[0] << " (" << info_collect.MRCA_times_cumul_mean_var[1] << ")" << std::endl;
+        std::cout << "MRCA mean : " << info_collect.MRCA_record_cumul_mean_var[0] << " (" << info_collect.MRCA_record_cumul_mean_var[1] << ")" << std::endl;
         std::cout << "        " << std::endl;
         std::cout << "Theo 2 lineage coa time mean : " << coa_tree_metric.Theo_2_lign_coa_time_mean << std::endl;
-        std::cout << "2 lineage coa time mean : " << std::get<0>(info_collect.Gen_coa_cumul_mean_var) << std::endl;
+        std::cout << "2 lineage coa time mean : Implement soon" << std::endl;
         std::cout << "        " << std::endl;
     }
     if (info_collect.Prob_id_1_loc_Qr)
@@ -121,16 +129,26 @@ int main(int argc, char *argv[])
         std::cout << "        " << std::endl;
     }
 
+    if (info_collect.Clock)
+    {
+        auto fin = std::chrono::high_resolution_clock::now();
+        info_collect.time_after_simulation += (std::chrono::duration_cast<std::chrono::nanoseconds>(fin - debut_after_simulation).count() * 0.000000001);
+    }
+
+    
     std::cout << "Total execution time  is ";
     auto fin = std::chrono::high_resolution_clock::now();
-    auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(fin - debut).count();
-    std::cout << time * 0.000000001 << " seconds" << std::endl;
+    auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(fin - debut).count() * 0.000000001;
+    std::cout << time << " seconds" << std::endl;
 
     if (info_collect.Clock)
     {
         std::cout << "***************" << std::endl;
+        std::cout << "Intialization time" << std::endl;
+        std::cout << (info_collect.time_before_simulation / time) * 100 << " % " << std::endl;
+        std::cout << "***************" << std::endl;
         std::cout << "Tree simulation time" << std::endl;
-        std::cout << (info_collect.time_simulation / time) * 100 << " %" << std::endl;
+        std::cout << (info_collect.time_simulation / time) * 100 << " % " << std::endl;
         std::cout << "############" << std::endl;
         std::cout << "Time for migration" << std::endl;
         std::cout << (info_collect.time_mig / time) * 100 << " %" << std::endl;
@@ -143,6 +161,9 @@ int main(int argc, char *argv[])
         std::cout << (info_collect.time_construct_tree / time) * 100 << " %" << std::endl;
         std::cout << "Time for mutation" << std::endl;
         std::cout << (info_collect.time_mutation / time) * 100 << " %" << std::endl;
+        std::cout << "***************" << std::endl;
+        std::cout << "After simulation time" << std::endl;
+        std::cout << (info_collect.time_after_simulation / time) * 100 << " % " << std::endl;
     }
 
     if (simu_param.Wait_for_cin_input || simu_param.Wait_for_final_cin_input)

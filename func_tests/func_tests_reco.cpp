@@ -69,7 +69,7 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "calc_deltaAB_test")
 /*       Algo Hudson        */
 /****************************/
 
-TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_hudson_site_2_N_5000_diplo_m_0_0001_r_0_0001_rep_400000_iam")
+TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_hudson_site_2_N_5000_diplo_m_0_0001_r_0_0001_rep_600000_iam")
 {
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
     auto &simu_param = singleton_c<simu_param_c>::instance();
@@ -81,14 +81,14 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_hudson_site_2_N_5000_diplo_m_
 
     rand_gen.put_seed(3);
 
-    simu_param.Repetition_nbr = 400000;
+    simu_param.Repetition_nbr = 600000;
     simu_param.Continuous_time_approxim = true;
     info_collect.Prob_id_1_2_loc = true;
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -101,9 +101,9 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_hudson_site_2_N_5000_diplo_m_
     samp_param.n_total_sample_size = 20;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -143,7 +143,7 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_hudson_site_2_N_5000_diplo_m_
     REQUIRE(PHI > m_PHI - 1.96 * (std::sqrt(v_PHI / simu_param.Repetition_nbr)));
 }
 
-TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_hudson_site_2_N_5000_diplo_m_0_00001_r_0_0001_rep_800000_iam")
+TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_hudson_site_2_N_5000_diplo_m_0_00001_r_0_0001_rep_10000000_iam")
 {
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
     auto &simu_param = singleton_c<simu_param_c>::instance();
@@ -155,14 +155,14 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_hudson_site_2_N_5000_diplo_m_
 
     rand_gen.put_seed(3);
 
-    simu_param.Repetition_nbr = 800000;
+    simu_param.Repetition_nbr = 10000000;
     simu_param.Continuous_time_approxim = true;
     info_collect.Prob_id_1_2_loc = true;
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -175,9 +175,9 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_hudson_site_2_N_5000_diplo_m_
     samp_param.n_total_sample_size = 20;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -217,7 +217,7 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_hudson_site_2_N_5000_diplo_m_
     REQUIRE(PHI > m_PHI - 1.96 * (std::sqrt(v_PHI / simu_param.Repetition_nbr)));
 }
 
-TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_hudson_site_2_N_5000_diplo_m_0_0001_r_0_00001_rep_400000_iam")
+TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_hudson_site_2_N_5000_diplo_m_0_0001_r_0_00001_rep_600000_iam")
 {
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
     auto &simu_param = singleton_c<simu_param_c>::instance();
@@ -229,14 +229,14 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_hudson_site_2_N_5000_diplo_m_
 
     rand_gen.put_seed(3);
 
-    simu_param.Repetition_nbr = 400000;
+    simu_param.Repetition_nbr = 600000;
     simu_param.Continuous_time_approxim = true;
     info_collect.Prob_id_1_2_loc = true;
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -249,9 +249,9 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_hudson_site_2_N_5000_diplo_m_
     samp_param.n_total_sample_size = 20;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -314,7 +314,7 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_gen/gen_one_pop_site_2_N_5000
     info_collect.Prob_id_1_loc_Qr = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -327,9 +327,9 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_gen/gen_one_pop_site_2_N_5000
     samp_param.n_total_sample_size = 20;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -369,7 +369,7 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_gen/gen_one_pop_site_2_N_5000
     REQUIRE(PHI > m_PHI - 1.96 * (std::sqrt(v_PHI / simu_param.Repetition_nbr)));
 }
 
-TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_gen/gen_one_pop_site_2_N_5000_diplo_m_0_00001_r_0_0001_rep_1200000_iam")
+TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_gen/gen_one_pop_site_2_N_5000_diplo_m_0_00001_r_0_0001_rep_6000000_iam")
 {
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
     auto &simu_param = singleton_c<simu_param_c>::instance();
@@ -381,14 +381,14 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_gen/gen_one_pop_site_2_N_5000
 
     rand_gen.put_seed(3);
 
-    simu_param.Repetition_nbr = 1200000;
+    simu_param.Repetition_nbr = 6000000;
     simu_param.Continuous_time_approxim = false;
     info_collect.Prob_id_1_2_loc = true;
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -401,9 +401,9 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_gen/gen_one_pop_site_2_N_5000
     samp_param.n_total_sample_size = 20;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());
@@ -443,7 +443,7 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_gen/gen_one_pop_site_2_N_5000
     REQUIRE(PHI > m_PHI - 1.96 * (std::sqrt(v_PHI / simu_param.Repetition_nbr)));
 }
 
-TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_gen/gen_one_pop_site_2_N_5000_diplo_m_0_0001_r_0_00001_rep_1600000_iam")
+TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_gen/gen_one_pop_site_2_N_5000_diplo_m_0_0001_r_0_00001_rep_3000000_iam")
 {
     auto &rand_gen = singleton_c<rand_gen_c>::instance();
     auto &simu_param = singleton_c<simu_param_c>::instance();
@@ -455,14 +455,14 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_gen/gen_one_pop_site_2_N_5000
 
     rand_gen.put_seed(3);
 
-    simu_param.Repetition_nbr = 1600000;
+    simu_param.Repetition_nbr = 3000000;
     simu_param.Continuous_time_approxim = false;
     info_collect.Prob_id_1_2_loc = true;
     info_collect.Stats = true;
     info_collect.Prob_id_1_loc_Qr = true;
     info_collect.Prob_id_1_loc_Qwi_wd_bd = true;
 
-    demo_param.Lattice_size = {0, 0};
+    demo_param.Lattice_size = {1, 1};
     demo_param.Disp_dist_max = {0, 0};
     demo_param.Edge_effects = edge_effect_enum::circular;
     demo_param.Disp_func[0] = fwd_disp_distrib_c::uniform();
@@ -475,9 +475,9 @@ TEST_CASE_METHOD(unit_test::FunctionnalTest, "algo_gen/gen_one_pop_site_2_N_5000
     samp_param.n_total_sample_size = 20;
 
     samp_param.Sample_coord_vec = std::vector<std::array<int, 2>>();
-    for (int x = 0; x <= demo_param.Lattice_size.at(0); ++x)
+    for (int x = 0; x < demo_param.Lattice_size.at(0); ++x)
     {
-        for (int y = 0; y <= demo_param.Lattice_size.at(1); ++y)
+        for (int y = 0; y < demo_param.Lattice_size.at(1); ++y)
         {
             auto coord01 = std::vector<std::array<int, 2>>(samp_param.Sample_size_per_node[0], std::array<int, 2>({x, y}));
             samp_param.Sample_coord_vec.insert(samp_param.Sample_coord_vec.end(), coord01.begin(), coord01.end());

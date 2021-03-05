@@ -21,6 +21,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include_directories ("${PROJECT_SOURCE_DIR}/lib/Glib")
 include_directories ("${PROJECT_SOURCE_DIR}/lib/Discret_Sichel")
 include_directories ("${PROJECT_SOURCE_DIR}/lib/Catch")
+include_directories ("${PROJECT_SOURCE_DIR}/lib/Tskit")
 include_directories ("${PROJECT_SOURCE_DIR}/sources")
 include_directories(BEFORE SYSTEM "${PROJECT_SOURCE_DIR}")
 
@@ -28,6 +29,7 @@ include_directories(BEFORE SYSTEM "${PROJECT_SOURCE_DIR}")
 
 add_subdirectory(lib/Glib)
 add_subdirectory(lib/Discret_Sichel)
+add_subdirectory(lib/Tskit)
 add_subdirectory(sources)
 
 if (CMAKE_FUNC_TEST)
@@ -39,4 +41,4 @@ endif()
 # fait le .o
 add_executable(GSpace main.cpp)
 # lie les .o/.a ...
-target_link_libraries(GSpace libsimu disSichel libcalc)
+target_link_libraries(GSpace libsimu disSichel libcalc tskit)
